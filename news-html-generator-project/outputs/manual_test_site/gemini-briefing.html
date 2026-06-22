@@ -1,0 +1,2096 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gemini Briefing</title>
+  <style>
+    :root {
+      /* Slate Dark Theme (Default) */
+      --bg-main: #09090b;
+      --bg-surface: #18181b;
+      --bg-surface-hover: #27272a;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.16);
+      --text-primary: #fafafa;
+      --text-secondary: #a1a1aa;
+      --text-muted: #71717a;
+      --accent: #3b82f6;
+      --accent-soft: rgba(59, 130, 246, 0.15);
+      --accent-hover: #60a5fa;
+      --support: #10b981;
+      --support-soft: rgba(16, 185, 129, 0.15);
+      --shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      --card-strong: #27272a;
+      --accent-gradient: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      
+      /* Regions */
+      --bg-türkiye: rgba(239, 68, 68, 0.2);
+      --text-türkiye: #f87171;
+      --bg-asya: rgba(245, 158, 11, 0.2);
+      --text-asya: #fbbf24;
+      --bg-avrupa: rgba(16, 185, 129, 0.2);
+      --text-avrupa: #34d399;
+      --bg-abd: rgba(59, 130, 246, 0.2);
+      --text-abd: #60a5fa;
+      --bg-küresel: rgba(161, 161, 170, 0.2);
+      --text-küresel: #d4d4d8;
+    }
+    
+    body.light {
+      /* Slate Light Theme */
+      --bg-main: #f4f4f5;
+      --bg-surface: #ffffff;
+      --bg-surface-hover: #f4f4f5;
+      --border: rgba(9, 9, 11, 0.08);
+      --border-hover: rgba(9, 9, 11, 0.16);
+      --text-primary: #09090b;
+      --text-secondary: #52525b;
+      --text-muted: #71717a;
+      --accent: #2563eb;
+      --accent-soft: rgba(37, 99, 235, 0.1);
+      --accent-hover: #1d4ed8;
+      --support: #059669;
+      --support-soft: rgba(5, 150, 105, 0.1);
+      --shadow: 0 20px 40px rgba(9, 9, 11, 0.05);
+      --card-strong: #f4f4f5;
+      --accent-gradient: linear-gradient(135deg, #2563eb, #7c3aed);
+      
+      /* Regions */
+      --bg-türkiye: rgba(220, 38, 38, 0.1);
+      --text-türkiye: #b91c1c;
+      --bg-asya: rgba(217, 119, 6, 0.1);
+      --text-asya: #b45309;
+      --bg-avrupa: rgba(5, 150, 105, 0.1);
+      --text-avrupa: #047857;
+      --bg-abd: rgba(37, 99, 235, 0.1);
+      --text-abd: #1d4ed8;
+      --bg-küresel: rgba(113, 113, 122, 0.1);
+      --text-küresel: #3f3f46;
+    }
+    
+    * { box-sizing: border-box; transition: background-color 0.2s, border-color 0.2s; }
+    
+    body {
+      margin: 0;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: var(--text-primary);
+      background-color: var(--bg-main);
+      line-height: 1.5;
+    }
+    
+    .shell {
+      width: min(1600px, calc(100% - 32px));
+      margin: 24px auto 64px;
+    }
+    
+    .layout-shell {
+      width: 100%;
+    }
+    
+    /* Header Portal Style */
+    .hero {
+      padding: 32px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--bg-surface);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+    
+    .hero-layout {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: center;
+    }
+    
+    .hero-title-area {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.75rem;
+      color: var(--accent);
+      font-weight: 700;
+      margin: 0 0 8px;
+    }
+    
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+    
+    .hero-copy {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      max-width: 70ch;
+    }
+    
+    .summary-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 20px;
+      border-radius: 14px;
+      background: var(--card-strong);
+      border: 1px solid var(--border);
+      min-width: 240px;
+    }
+    
+    .summary-kicker {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    
+    .summary-count {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
+    
+    .summary-note {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      line-height: 1.4;
+    }
+    
+    /* 3-Column Layout */
+    .content-layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+    
+    .filters-sidebar {
+      position: sticky;
+      top: 24px;
+      max-height: calc(100vh - 48px);
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--bg-surface);
+      box-shadow: var(--shadow);
+    }
+    
+    .filters-scroll {
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .filters-sidebar h2 {
+      margin: 0 0 6px;
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+    
+    .filter-help {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+    
+    .filter-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+    }
+    
+    .filter-stat {
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-main);
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+    
+    .filter-stat strong {
+      font-size: 1.2rem;
+      font-weight: 800;
+    }
+    
+    .filter-stat span {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    
+    .filters-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    
+    .filters-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+    }
+    
+    .filter-select, .filter-input, .search-input, .toolbar-select {
+      width: 100%;
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.85rem;
+      outline: none;
+    }
+    
+    .filter-select:focus, .filter-input:focus, .search-input:focus, .toolbar-select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-soft);
+    }
+    
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    
+    .filter-pill {
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 6px 12px;
+      color: var(--text-secondary);
+      font-size: 0.78rem;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    
+    .filter-pill:hover {
+      border-color: var(--accent);
+      color: var(--text-primary);
+    }
+    
+    .filters-actions {
+      margin-top: 8px;
+    }
+    
+    /* Content Column */
+    .content-stack {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 24px;
+      align-items: start;
+    }
+    
+    .toolbar {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 1fr auto auto auto auto;
+      gap: 12px;
+      align-items: center;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px 20px;
+      box-shadow: var(--shadow);
+    }
+    
+    .search-input {
+      padding: 10px 14px;
+    }
+    
+    .active-filter-chips {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    
+    .active-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent-soft);
+      border: 1px solid var(--accent);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+    
+    .active-chip button {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--text-primary);
+      font-weight: 800;
+      cursor: pointer;
+      margin-left: 4px;
+    }
+    
+    .toggle-button, .button, .secondary-button {
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 10px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    
+    .toggle-button {
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+    
+    .toggle-button[data-active="true"] {
+      background: var(--accent);
+      color: #ffffff;
+      border-color: var(--accent);
+    }
+    
+    .button {
+      background: var(--accent-gradient);
+      color: #ffffff;
+      border: none;
+    }
+    
+    .button:hover {
+      opacity: 0.9;
+    }
+    
+    .secondary-button {
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+    }
+    
+    .secondary-button:hover {
+      background: var(--bg-surface-hover);
+    }
+    
+    .chip {
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+    
+    /* Dashboard section layout - direct direct children of content-stack */
+    .dashboard {
+      display: contents;
+    }
+    
+    .dashboard-overview {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    
+    .overview-stat {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      padding: 16px 20px;
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+    }
+    
+    .overview-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin: 0 0 6px;
+      letter-spacing: 0.05em;
+    }
+    
+    .overview-value {
+      font-size: 1.5rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+    
+    .overview-note {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    
+    .executive-summary {
+      grid-column: 1;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    
+    .dashboard-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin: 0 0 10px;
+      border-left: 3px solid var(--accent);
+      padding-left: 8px;
+    }
+    
+    .executive-copy {
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+      line-height: 1.6;
+      margin: 0;
+    }
+    
+    .executive-list {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    /* Left Feed & Right Sidebar */
+    .grid {
+      grid-column: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .dashboard-highlights {
+      grid-column: 2;
+      grid-row: span 2;
+      position: sticky;
+      top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-height: calc(100vh - 48px);
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    
+    .dashboard-card.compact {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+    
+    /* Grouped TOC Styling */
+    .toc-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    
+    .toc-region-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    
+    .toc-region-title {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      letter-spacing: 0.05em;
+    }
+    
+    .toc-region-items {
+      border-left: 2px solid var(--border);
+      padding-left: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    
+    .toc-item {
+      text-decoration: none;
+      display: block;
+      padding: 6px 8px;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+    
+    .toc-item:hover {
+      background: var(--bg-surface-hover);
+    }
+    
+    .toc-item-headline {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.3;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .toc-item-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+    
+    .toc-org {
+      font-weight: 500;
+    }
+    
+    .toc-cat-badge {
+      font-size: 0.62rem;
+      font-weight: 700;
+      padding: 1px 4px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    
+    .region-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    
+    .region-türkiye { background: #ef4444; }
+    .region-asya { background: #f59e0b; }
+    .region-avrupa { background: #10b981; }
+    .region-abd { background: #3b82f6; }
+    .region-küresel { background: #a1a1aa; }
+    
+    /* Category styles */
+    .cat-siyasi { background: rgba(236, 72, 153, 0.15); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.3); }
+    .cat-ekonomik { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .cat-askeri { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .cat-teknolojik { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+    .cat-genel { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    
+    /* Radar Card */
+    .radial-stat {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 16px 0;
+    }
+    
+    .radial-ring {
+      position: relative;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: conic-gradient(var(--accent) calc(var(--value) * 1%), var(--border) 0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .radial-ring::after {
+      content: "";
+      position: absolute;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--bg-surface);
+    }
+    
+    .radial-ring span {
+      position: relative;
+      z-index: 1;
+      font-size: 1.2rem;
+      font-weight: 800;
+    }
+    
+    .radial-copy {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+    
+    .stat-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+    }
+    
+    .mini-stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .mini-stat strong { font-size: 0.95rem; font-weight: 800; }
+    .mini-stat span { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; }
+    
+    .distribution-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .distribution-row {
+      width: 100%;
+    }
+    
+    .distribution-button {
+      background: none;
+      border: none;
+      width: 100%;
+      padding: 0;
+      cursor: pointer;
+      display: block;
+      text-align: left;
+      color: inherit;
+    }
+    
+    .distribution-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    
+    .distribution-track {
+      height: 6px;
+      background: var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    
+    .distribution-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 3px;
+    }
+    
+    .source-summary {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .source-highlight {
+      font-size: 0.85rem;
+      line-height: 1.4;
+    }
+    
+    .source-highlight strong {
+      display: block;
+      font-size: 1rem;
+      color: var(--accent);
+    }
+    
+    .source-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+    
+    .source-table th, .source-table td {
+      padding: 6px 8px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .source-table th {
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    
+    .source-filter-button {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--text-primary);
+      cursor: pointer;
+      font-weight: 600;
+      text-align: left;
+    }
+    
+    .source-filter-button:hover {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+    
+    /* News Card Design */
+    .news-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+    
+    .news-card:hover {
+      border-color: var(--border-hover);
+    }
+    
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    
+    .card-index {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      background: var(--bg-main);
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+    
+    .card-top-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .source-host {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    
+    .theme-badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      background: var(--card-strong);
+      padding: 4px 8px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      border: 1px solid var(--border);
+    }
+    
+    /* Region and Category badges */
+    .card-meta-badges {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    
+    .region-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+    }
+    
+    .region-badge.region-türkiye { background: var(--bg-türkiye); color: var(--text-türkiye); }
+    .region-badge.region-asya { background: var(--bg-asya); color: var(--text-asya); }
+    .region-badge.region-avrupa { background: var(--bg-avrupa); color: var(--text-avrupa); }
+    .region-badge.region-abd { background: var(--bg-abd); color: var(--text-abd); }
+    .region-badge.region-küresel { background: var(--bg-küresel); color: var(--text-küresel); }
+    
+    .card-body {
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    
+    .card-expandable {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+      margin-top: 16px;
+    }
+    
+    .news-card[data-expanded="true"] .card-expandable {
+      display: flex;
+    }
+    
+    .insight-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    
+    .insight-panel {
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    
+    .panel-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin: 0 0 10px;
+      letter-spacing: 0.05em;
+    }
+    
+    .insight-tags {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    
+    .insight-tags li {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+    }
+    
+    .infographic {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .score-chip {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--support);
+      margin-bottom: 4px;
+    }
+    
+    .metric {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    
+    .metric-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    
+    .metric-track {
+      height: 5px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    
+    .metric-fill {
+      height: 100%;
+      background: var(--support);
+      border-radius: 2px;
+    }
+    
+    .summary-list {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    
+    .detail-sections {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    
+    .detail-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+    }
+    
+    .detail-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin: 0 0 6px;
+    }
+    
+    .detail-copy {
+      font-size: 0.8rem;
+      line-height: 1.4;
+      margin: 0;
+      color: var(--text-secondary);
+    }
+    
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+      margin-top: 16px;
+    }
+    
+    .card-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    
+    .source-link {
+      color: var(--accent);
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 0.85rem;
+    }
+    
+    .source-link:hover {
+      text-decoration: underline;
+    }
+    
+    .meta-note {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    
+    /* Executive Mode overrides */
+    .exec-compact .content-layout {
+      grid-template-columns: 1fr;
+    }
+    
+    .exec-compact .dashboard-highlights,
+    .exec-compact .filters-sidebar,
+    .exec-compact .card-expandable,
+    .exec-compact .meta-note {
+      display: none;
+    }
+    
+    .exec-compact .dashboard-overview {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .exec-compact .content-stack {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    
+    .exec-compact .grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .exec-compact .news-card {
+      padding: 22px;
+    }
+    
+    .exec-compact .card-body {
+      margin-bottom: 0;
+    }
+    
+    .exec-compact .news-card[hidden] {
+      display: none !important;
+    }
+    
+    /* Theme Toggle */
+    .theme-toggle-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .theme-toggle-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .light-icon { display: block; }
+    .dark-icon { display: none; }
+    
+    body.light .light-icon { display: none; }
+    body.light .dark-icon { display: block; }
+    
+    @media (max-width: 1024px) {
+      .content-layout {
+        grid-template-columns: 1fr;
+      }
+      .content-stack {
+        grid-template-columns: 1fr;
+      }
+      .dashboard-highlights {
+        grid-column: 1;
+        grid-row: auto;
+        position: static;
+        max-height: none;
+      }
+      .filters-sidebar {
+        position: static;
+        max-height: none;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .hero-layout {
+        grid-template-columns: 1fr;
+      }
+      .toolbar {
+        grid-template-columns: 1fr;
+      }
+      .dashboard-overview {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .detail-sections, .insight-grid {
+        grid-template-columns: 1fr;
+      }
+      .card-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell layout-shell">
+    <section class="hero">
+      <div class="hero-layout">
+        <div class="hero-title-area">
+          <p class="eyebrow">Günlük Haber Akışı</p>
+          <h1>Gemini Briefing</h1>
+          <p class="hero-copy">Word dokümanındaki haber metinleri korunarak, kapalı ağ içinde güvenle kullanılabilecek tek dosyalık bir HTML bültene dönüştürüldü.</p>
+        </div>
+        <div class="theme-toggle-container">
+          <aside class="summary-panel">
+            <div class="summary-kicker">Bülten Özeti</div>
+            <div class="summary-count">Toplam 7 haber</div>
+            <div class="summary-note">Disa bagimli varlik kullanilmaz. Tum stil ve etkilesim ayni HTML dosyasina gomuludur.</div>
+          </aside>
+          <button class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Temayı Değiştir">
+            <span class="dark-icon">☀️</span>
+            <span class="light-icon">🌙</span>
+          </button>
+        </div>
+      </div>
+    </section>
+    <section class="content-layout">
+      <aside class="dashboard-card filters-sidebar">
+  <div class="filters-scroll">
+  <div>
+    <h2 class="dashboard-title">Gelismis Filtreler</h2>
+    <div class="filter-help">Bölge, Kategori, Kurum, tema, kaynak doküman ve anahtar kelimeyi birlikte kullanarak havuzu hızla daraltın.</div>
+  </div>
+  <div class="filter-stats">
+      <div class="filter-stat"><strong>1</strong><span>Kurum</span></div>
+      <div class="filter-stat"><strong>2</strong><span>Tema</span></div>
+      <div class="filter-stat"><strong>1</strong><span>Dokuman</span></div>
+      <div class="filter-stat"><strong>7</strong><span>Toplam Haber</span></div>
+    </div>
+  <label class="filters-group" for="region-filter">
+    <span class="filters-label">Coğrafya (Bölge)</span>
+    <select id="region-filter" class="filter-select" onchange="applyFilters()">
+      <option value="">Tum Bolgeler</option>
+      <option value="Türkiye">Türkiye</option>
+      <option value="Asya">Asya</option>
+      <option value="Avrupa">Avrupa</option>
+      <option value="ABD">ABD</option>
+      <option value="Küresel">Küresel</option>
+    </select>
+  </label>
+  <label class="filters-group" for="category-filter">
+    <span class="filters-label">Tür (Kategori)</span>
+    <select id="category-filter" class="filter-select" onchange="applyFilters()">
+      <option value="">Tum Kategoriler</option>
+      <option value="Siyasi">Siyasi</option>
+      <option value="Ekonomik">Ekonomik</option>
+      <option value="Askeri">Askeri</option>
+      <option value="Teknolojik">Teknolojik</option>
+      <option value="Genel">Genel</option>
+    </select>
+  </label>
+  <label class="filters-group" for="institution-filter">
+    <span class="filters-label">Kurum</span>
+    <select id="institution-filter" class="filter-select" onchange="applyFilters()">
+      <option value="">Tum Kurumlar</option>
+      <option value="Gemini">Gemini</option>
+    </select>
+  </label>
+  <label class="filters-group" for="theme-filter">
+    <span class="filters-label">Tema</span>
+    <select id="theme-filter" class="filter-select" onchange="applyFilters()">
+      <option value="">Tum Temalar</option>
+      <option value="Kurumsal Donusum">Kurumsal Donusum</option><option value="Teknoloji Guncellemesi">Teknoloji Guncellemesi</option>
+    </select>
+  </label>
+  <label class="filters-group" for="document-filter">
+    <span class="filters-label">Dokuman</span>
+    <select id="document-filter" class="filter-select" onchange="applyFilters()">
+      <option value="">Tum Dokumanlar</option>
+      <option value="gemini-briefing">Gemini Briefing</option>
+    </select>
+  </label>
+  <label class="filters-group" for="source-filter">
+    <span class="filters-label">Kaynak Alan Adi</span>
+    <select id="source-filter" class="filter-select" onchange="applyFilters()">
+      <option value="">Tum Kaynaklar</option>
+      <option value="example.com">example.com</option>
+    </select>
+  </label>
+  <label class="filters-group" for="keyword-filter">
+    <span class="filters-label">Anahtar Kelime</span>
+    <input id="keyword-filter" class="filter-input" type="search" placeholder="Altyapi, ajan, guvenlik..." oninput="applyFilters()">
+  </label>
+  <div class="filters-group">
+    <span class="filters-label">Hizli Etiketler</span>
+    <div class="filter-pills"><button class="filter-pill" type="button" onclick="document.getElementById('keyword-filter').value='Genel Gundem'; applyFilters()">Genel Gundem</button><button class="filter-pill" type="button" onclick="document.getElementById('keyword-filter').value='Kurumsal Etki'; applyFilters()">Kurumsal Etki</button><button class="filter-pill" type="button" onclick="document.getElementById('keyword-filter').value='Diplomasi'; applyFilters()">Diplomasi</button><button class="filter-pill" type="button" onclick="document.getElementById('keyword-filter').value='Yapay Zeka'; applyFilters()">Yapay Zeka</button></div>
+  </div>
+  <div class="filters-actions">
+    <button class="secondary-button" type="button" style="width: 100%;" onclick="resetFilters()">Filtreleri Temizle</button>
+  </div>
+  </div>
+</aside>
+      <div class="content-stack">
+        <section class="toolbar">
+          <input id="news-search" class="search-input" type="search" placeholder="Haber metni, kurum, kaynak veya tema ile ara" oninput="filterCards()">
+          <select id="sort-order" class="toolbar-select" onchange="sortCards()">
+            <option value="importance-desc">Oneme Gore</option>
+            <option value="relevance">Varsayilan Sira</option>
+            <option value="organization-asc">Kuruma Gore</option>
+            <option value="theme-asc">Temaya Gore</option>
+            <option value="document-asc">Dokumana Gore</option>
+          </select>
+          <button id="exec-mode-toggle" class="toggle-button" type="button" data-active="false" onclick="toggleExecutiveMode()">Yonetici 5 Dakika</button>
+          <div id="results-count" class="chip">Toplam 7 haber</div>
+          <button class="button" type="button" onclick="window.print()">Yazdir veya PDF Al</button>
+        </section>
+        <div id="active-filter-chips" class="active-filter-chips" hidden></div>
+        <section class="dashboard">
+  <section class="dashboard-overview">
+    <article class="overview-stat">
+      <p class="overview-label">Toplam Haber</p>
+      <div class="overview-value">7</div>
+      <div class="overview-note">Tek sayfada toplanan toplam kayit.</div>
+    </article>
+    <article class="overview-stat">
+      <p class="overview-label">Ortalama Onem</p>
+      <div class="overview-value">47</div>
+      <div class="overview-note">Genel kurumsal etki seviyesi.</div>
+    </article>
+    <article class="overview-stat">
+      <p class="overview-label">Baskin Tema</p>
+      <div class="overview-value">Teknoloji Guncellemesi</div>
+      <div class="overview-note">4 haber ile en yogun konu.</div>
+    </article>
+    <article class="overview-stat">
+      <p class="overview-label">Baskin Kaynak</p>
+      <div class="overview-value">example.com</div>
+      <div class="overview-note">%100 pay ile en cok gecen alan adi.</div>
+    </article>
+  </section>
+  <section class="dashboard-card executive-summary">
+    <div>
+      <h2 class="dashboard-title">Yonetici Ozeti</h2>
+      <p class="executive-copy">Bu hafta one cikan gelismeler agirlikli olarak teknoloji guncellemesi ekseninde toplandi. Okuma havuzu Gemini kurumlari uzerinde yogunlasirken, yonetici takibi icin tema dagilimi ve kaynak akisi birlikte izlenmeli.</p>
+    </div>
+    <div>
+      <h2 class="dashboard-title">Bu hafta one cikan gelismeler</h2>
+      <ul class="executive-list"><li>Toplam 7 haber, 1 farkli kurum ve 2 tema altinda toplandi.</li><li>Baskin tema Teknoloji Guncellemesi; toplam havuz icindeki payi %57 seviyesinde.</li><li>Kaynak akisinda example.com baskin; izleme yogunlugu bu alanda toplanmis durumda.</li></ul>
+    </div>
+  </section>
+  <section class="dashboard-highlights">
+    <section class="dashboard-primary">
+      <div class="dashboard-card compact">
+        <h2 class="dashboard-title">Icerik Indeksi</h2>
+        <div class="toc-list"><div class="toc-region-group">
+<div class="toc-region-title"><span class="region-dot region-asya"></span>Asya</div>
+<div class="toc-region-items">
+
+            <a class="toc-item" href="#news-4" data-toc-index="4">
+                <div class="toc-item-headline">Gemini, satış ekipleri için toplantı notları ile CRM özetlerini otomatik ilişkile...</div>
+                <div class="toc-item-meta">
+                    <span class="toc-org">Gemini</span>
+                    <span class="toc-cat-badge cat-ekonomik">Ekonomik</span>
+                </div>
+            </a>
+            
+</div>
+</div>
+<div class="toc-region-group">
+<div class="toc-region-title"><span class="region-dot region-küresel"></span>Küresel</div>
+<div class="toc-region-items">
+
+            <a class="toc-item" href="#news-1" data-toc-index="1">
+                <div class="toc-item-headline">Gemini, çok modlu arama ve doküman özetleme iş akışlarını tek panelde birleştiren...</div>
+                <div class="toc-item-meta">
+                    <span class="toc-org">Gemini</span>
+                    <span class="toc-cat-badge cat-ekonomik">Ekonomik</span>
+                </div>
+            </a>
+            
+
+            <a class="toc-item" href="#news-2" data-toc-index="2">
+                <div class="toc-item-headline">Gemini, ekiplerin video, görsel ve metin üzerinden birlikte araştırma yapmasını s...</div>
+                <div class="toc-item-meta">
+                    <span class="toc-org">Gemini</span>
+                    <span class="toc-cat-badge cat-genel">Genel</span>
+                </div>
+            </a>
+            
+
+            <a class="toc-item" href="#news-3" data-toc-index="3">
+                <div class="toc-item-headline">Gemini, kurumsal arama sonuçlarında kaynak puanlaması ve öne çıkan risk notları g...</div>
+                <div class="toc-item-meta">
+                    <span class="toc-org">Gemini</span>
+                    <span class="toc-cat-badge cat-ekonomik">Ekonomik</span>
+                </div>
+            </a>
+            
+
+            <a class="toc-item" href="#news-5" data-toc-index="5">
+                <div class="toc-item-headline">Gemini, ofis belgeleri üzerinde çok adımlı analiz yapabilen ajan benzeri öneri ak...</div>
+                <div class="toc-item-meta">
+                    <span class="toc-org">Gemini</span>
+                    <span class="toc-cat-badge cat-genel">Genel</span>
+                </div>
+            </a>
+            
+
+            <a class="toc-item" href="#news-6" data-toc-index="6">
+                <div class="toc-item-headline">Gemini, görsel içerikten tablo çıkarımı ve yönetici özeti üretimini aynı yan pane...</div>
+                <div class="toc-item-meta">
+                    <span class="toc-org">Gemini</span>
+                    <span class="toc-cat-badge cat-genel">Genel</span>
+                </div>
+            </a>
+            
+
+            <a class="toc-item" href="#news-7" data-toc-index="7">
+                <div class="toc-item-headline">Gemini, kurumsal bilgi tabanı sorgularında departman bazlı erişim ve bağlamsal fi...</div>
+                <div class="toc-item-meta">
+                    <span class="toc-org">Gemini</span>
+                    <span class="toc-cat-badge cat-genel">Genel</span>
+                </div>
+            </a>
+            
+</div>
+</div></div>
+      </div>
+      <div class="dashboard-metrics">
+        <section class="dashboard-card compact" style="margin-top: 20px;">
+          <div class="radar-card">
+            <h2 class="dashboard-title">Gundem Nabzi</h2>
+            <div class="radial-stat">
+              <div class="radial-ring" style="--value: 47">
+                <span>47</span>
+              </div>
+              <div class="radial-copy">Onem skoru, etiket yogunlugu ve operasyon baglamini tek bakista ozetler.</div>
+            </div>
+            <div class="stat-strip">
+              <div class="mini-stat"><strong>4</strong><span>Aktif Etiket</span></div>
+              <div class="mini-stat"><strong>39</strong><span>Gundem Indeksi</span></div>
+              <div class="mini-stat"><strong>2</strong><span>Tema Sayisi</span></div>
+            </div>
+          </div>
+        </section>
+      <section class="dashboard-card compact" style="margin-top: 20px;">
+        <h2 class="dashboard-title">Tema Dagilimi</h2>
+        <div class="distribution-list"><div class="distribution-row">
+  <button class="distribution-button" type="button" data-theme-filter="Teknoloji Guncellemesi" onclick="setFilterValue('theme-filter', 'Teknoloji Guncellemesi')">
+    <div class="distribution-head">
+      <span>Teknoloji Guncellemesi</span>
+      <span>%57</span>
+    </div>
+    <div class="distribution-track">
+      <div class="distribution-fill" style="width: 57%"></div>
+    </div>
+  </button>
+</div><div class="distribution-row">
+  <button class="distribution-button" type="button" data-theme-filter="Kurumsal Donusum" onclick="setFilterValue('theme-filter', 'Kurumsal Donusum')">
+    <div class="distribution-head">
+      <span>Kurumsal Donusum</span>
+      <span>%43</span>
+    </div>
+    <div class="distribution-track">
+      <div class="distribution-fill" style="width: 43%"></div>
+    </div>
+  </button>
+</div></div>
+      </section>
+      </div>
+    </section>
+    <section class="dashboard-secondary">
+      <section class="dashboard-card compact">
+        <h2 class="dashboard-title">Kaynak Yogunlugu</h2>
+        <div class="source-summary">
+          <div class="source-highlight">
+            <strong>example.com</strong>
+            <span>En baskin alan adi. Toplam 7 haber ve %100 pay.</span>
+          </div>
+          <table class="source-table">
+            <thead><tr><th>Kaynak</th><th>Adet</th><th>Pay</th></tr></thead>
+            <tbody><tr>
+          <td><button class="source-filter-button" type="button" data-source-filter="example.com" onclick="setFilterValue('source-filter', 'example.com')">example.com</button></td>
+          <td>7</td>
+          <td>%100</td>
+        </tr></tbody>
+          </table>
+        </div>
+      </section>
+      <section class="dashboard-card compact" style="margin-top: 20px;">
+        <h2 class="dashboard-title">Kapsam Notu</h2>
+        <div class="radial-copy">Bu alan sabit bir doldurma kutusu gibi degil, dashboard akisina ritim veren kisa bir baglam notu olarak dusunuldu. Amac yogunlugu tek yere yigmak yerine goze nefes alacak araliklar birakmak.</div>
+      </section>
+    </section>
+  </section>
+</section>
+        <section class="grid">
+          <article id="news-1" class="news-card" data-search="Gemini, çok modlu arama ve doküman özetleme iş akışlarını tek panelde birleştiren yeni çalışma alanını tanıttı. Gemini, çok modlu arama ve doküman özetleme iş akışlarını tek panelde birleştiren... example.com Gemini gemini-briefing Teknoloji Guncellemesi Genel Gundem Gemini, çok modlu arama ve doküman özetleme iş akışlarını tek panelde birleştiren yeni çalışma alanını tanıttı. Küresel Ekonomik" data-organization="Gemini" data-theme="Teknoloji Guncellemesi" data-document="gemini-briefing" data-document-label="Gemini Briefing" data-source="example.com" data-keywords="Genel Gundem" data-importance="46" data-index="0" data-expanded="false" data-region="Küresel" data-category="Ekonomik">
+  <div class="card-top">
+    <div class="card-index">01</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-1')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Teknoloji Guncellemesi</div>
+  <div class="card-meta-badges">
+    <span class="region-badge region-küresel">Küresel</span>
+    <span class="toc-cat-badge cat-ekonomik">Ekonomik</span>
+  </div>
+  <div class="card-body">Gemini, çok modlu arama ve doküman özetleme iş akışlarını tek panelde birleştiren yeni çalışma alanını tanıttı.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Genel Gundem</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 46/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>Gemini, çok modlu arama ve doküman özetleme iş akışlarını tek panelde birleştiren yeni çalışma alanını tanıttı.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">Gemini, çok modlu arama ve doküman özetleme iş akışlarını tek panelde birleştiren yeni çalışma alanını tanıttı.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Platform ve urun yol haritasi etkisi belirgin. Haber Gemini ekseninde teknoloji guncellemesi basligina oturuyor; izleme etiketleri: Genel Gundem.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Gemini Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/gemini-workspace-1" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'Gemini')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: Gemini | Dokuman: Gemini Briefing</span>
+  </footer>
+</article>
+<article id="news-2" class="news-card" data-search="Gemini, ekiplerin video, görsel ve metin üzerinden birlikte araştırma yapmasını sağlayan ortak oturum modunu duyurdu. Gemini, ekiplerin video, görsel ve metin üzerinden birlikte araştırma yapmasını s... example.com Gemini gemini-briefing Teknoloji Guncellemesi Diplomasi Gemini, ekiplerin video, görsel ve metin üzerinden birlikte araştırma yapmasını sağlayan ortak oturum modunu duyurdu. Küresel Genel" data-organization="Gemini" data-theme="Teknoloji Guncellemesi" data-document="gemini-briefing" data-document-label="Gemini Briefing" data-source="example.com" data-keywords="Diplomasi" data-importance="46" data-index="1" data-expanded="false" data-region="Küresel" data-category="Genel">
+  <div class="card-top">
+    <div class="card-index">02</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-2')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Teknoloji Guncellemesi</div>
+  <div class="card-meta-badges">
+    <span class="region-badge region-küresel">Küresel</span>
+    <span class="toc-cat-badge cat-genel">Genel</span>
+  </div>
+  <div class="card-body">Gemini, ekiplerin video, görsel ve metin üzerinden birlikte araştırma yapmasını sağlayan ortak oturum modunu duyurdu.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Diplomasi</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 46/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>Gemini, ekiplerin video, görsel ve metin üzerinden birlikte araştırma yapmasını sağlayan ortak oturum modunu duyurdu.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">Gemini, ekiplerin video, görsel ve metin üzerinden birlikte araştırma yapmasını sağlayan ortak oturum modunu duyurdu.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Platform ve urun yol haritasi etkisi belirgin. Haber Gemini ekseninde teknoloji guncellemesi basligina oturuyor; izleme etiketleri: Diplomasi.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Gemini Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/gemini-collab-2" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'Gemini')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: Gemini | Dokuman: Gemini Briefing</span>
+  </footer>
+</article>
+<article id="news-3" class="news-card" data-search="Gemini, kurumsal arama sonuçlarında kaynak puanlaması ve öne çıkan risk notları gösteren yeni görünümü paylaştı. Gemini, kurumsal arama sonuçlarında kaynak puanlaması ve öne çıkan risk notları g... example.com Gemini gemini-briefing Kurumsal Donusum Kurumsal Etki Gemini, kurumsal arama sonuçlarında kaynak puanlaması ve öne çıkan risk notları gösteren yeni görünümü paylaştı. Küresel Ekonomik" data-organization="Gemini" data-theme="Kurumsal Donusum" data-document="gemini-briefing" data-document-label="Gemini Briefing" data-source="example.com" data-keywords="Kurumsal Etki" data-importance="46" data-index="2" data-expanded="false" data-region="Küresel" data-category="Ekonomik">
+  <div class="card-top">
+    <div class="card-index">03</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-3')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Kurumsal Donusum</div>
+  <div class="card-meta-badges">
+    <span class="region-badge region-küresel">Küresel</span>
+    <span class="toc-cat-badge cat-ekonomik">Ekonomik</span>
+  </div>
+  <div class="card-body">Gemini, kurumsal arama sonuçlarında kaynak puanlaması ve öne çıkan risk notları gösteren yeni görünümü paylaştı.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Kurumsal Etki</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 46/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>Gemini, kurumsal arama sonuçlarında kaynak puanlaması ve öne çıkan risk notları gösteren yeni görünümü paylaştı.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">Gemini, kurumsal arama sonuçlarında kaynak puanlaması ve öne çıkan risk notları gösteren yeni görünümü paylaştı.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Platform ve urun yol haritasi etkisi belirgin. Haber Gemini ekseninde kurumsal donusum basligina oturuyor; izleme etiketleri: Kurumsal Etki.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Gemini Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/gemini-search-3" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'Gemini')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: Gemini | Dokuman: Gemini Briefing</span>
+  </footer>
+</article>
+<article id="news-4" class="news-card" data-search="Gemini, satış ekipleri için toplantı notları ile CRM özetlerini otomatik ilişkilendiren yeni eklentileri tanıttı. Gemini, satış ekipleri için toplantı notları ile CRM özetlerini otomatik ilişkile... example.com Gemini gemini-briefing Teknoloji Guncellemesi Genel Gundem Gemini, satış ekipleri için toplantı notları ile CRM özetlerini otomatik ilişkilendiren yeni eklentileri tanıttı. Asya Ekonomik" data-organization="Gemini" data-theme="Teknoloji Guncellemesi" data-document="gemini-briefing" data-document-label="Gemini Briefing" data-source="example.com" data-keywords="Genel Gundem" data-importance="46" data-index="3" data-expanded="false" data-region="Asya" data-category="Ekonomik">
+  <div class="card-top">
+    <div class="card-index">04</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-4')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Teknoloji Guncellemesi</div>
+  <div class="card-meta-badges">
+    <span class="region-badge region-asya">Asya</span>
+    <span class="toc-cat-badge cat-ekonomik">Ekonomik</span>
+  </div>
+  <div class="card-body">Gemini, satış ekipleri için toplantı notları ile CRM özetlerini otomatik ilişkilendiren yeni eklentileri tanıttı.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Genel Gundem</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 46/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>Gemini, satış ekipleri için toplantı notları ile CRM özetlerini otomatik ilişkilendiren yeni eklentileri tanıttı.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">Gemini, satış ekipleri için toplantı notları ile CRM özetlerini otomatik ilişkilendiren yeni eklentileri tanıttı.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Platform ve urun yol haritasi etkisi belirgin. Haber Gemini ekseninde teknoloji guncellemesi basligina oturuyor; izleme etiketleri: Genel Gundem.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Gemini Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/gemini-sales-4" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'Gemini')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: Gemini | Dokuman: Gemini Briefing</span>
+  </footer>
+</article>
+<article id="news-5" class="news-card" data-search="Gemini, ofis belgeleri üzerinde çok adımlı analiz yapabilen ajan benzeri öneri akışını genişletti. Gemini, ofis belgeleri üzerinde çok adımlı analiz yapabilen ajan benzeri öneri ak... example.com Gemini gemini-briefing Kurumsal Donusum Yapay Zeka Gemini, ofis belgeleri üzerinde çok adımlı analiz yapabilen ajan benzeri öneri akışını genişletti. Küresel Genel" data-organization="Gemini" data-theme="Kurumsal Donusum" data-document="gemini-briefing" data-document-label="Gemini Briefing" data-source="example.com" data-keywords="Yapay Zeka" data-importance="54" data-index="4" data-expanded="false" data-region="Küresel" data-category="Genel">
+  <div class="card-top">
+    <div class="card-index">05</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-5')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Kurumsal Donusum</div>
+  <div class="card-meta-badges">
+    <span class="region-badge region-küresel">Küresel</span>
+    <span class="toc-cat-badge cat-genel">Genel</span>
+  </div>
+  <div class="card-body">Gemini, ofis belgeleri üzerinde çok adımlı analiz yapabilen ajan benzeri öneri akışını genişletti.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Yapay Zeka</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 54/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>40</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 40%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>40</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 40%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>40</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 40%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>Gemini, ofis belgeleri üzerinde çok adımlı analiz yapabilen ajan benzeri öneri akışını genişletti.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">Gemini, ofis belgeleri üzerinde çok adımlı analiz yapabilen ajan benzeri öneri akışını genişletti.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Platform ve urun yol haritasi etkisi belirgin. Haber Gemini ekseninde kurumsal donusum basligina oturuyor; izleme etiketleri: Yapay Zeka.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Gemini Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/gemini-docs-5" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'Gemini')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: Gemini | Dokuman: Gemini Briefing</span>
+  </footer>
+</article>
+<article id="news-6" class="news-card" data-search="Gemini, görsel içerikten tablo çıkarımı ve yönetici özeti üretimini aynı yan panelde topladı. Gemini, görsel içerikten tablo çıkarımı ve yönetici özeti üretimini aynı yan pane... example.com Gemini gemini-briefing Teknoloji Guncellemesi Genel Gundem Gemini, görsel içerikten tablo çıkarımı ve yönetici özeti üretimini aynı yan panelde topladı. Küresel Genel" data-organization="Gemini" data-theme="Teknoloji Guncellemesi" data-document="gemini-briefing" data-document-label="Gemini Briefing" data-source="example.com" data-keywords="Genel Gundem" data-importance="46" data-index="5" data-expanded="false" data-region="Küresel" data-category="Genel">
+  <div class="card-top">
+    <div class="card-index">06</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-6')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Teknoloji Guncellemesi</div>
+  <div class="card-meta-badges">
+    <span class="region-badge region-küresel">Küresel</span>
+    <span class="toc-cat-badge cat-genel">Genel</span>
+  </div>
+  <div class="card-body">Gemini, görsel içerikten tablo çıkarımı ve yönetici özeti üretimini aynı yan panelde topladı.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Genel Gundem</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 46/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>Gemini, görsel içerikten tablo çıkarımı ve yönetici özeti üretimini aynı yan panelde topladı.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">Gemini, görsel içerikten tablo çıkarımı ve yönetici özeti üretimini aynı yan panelde topladı.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Platform ve urun yol haritasi etkisi belirgin. Haber Gemini ekseninde teknoloji guncellemesi basligina oturuyor; izleme etiketleri: Genel Gundem.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Gemini Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/gemini-vision-6" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'Gemini')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: Gemini | Dokuman: Gemini Briefing</span>
+  </footer>
+</article>
+<article id="news-7" class="news-card" data-search="Gemini, kurumsal bilgi tabanı sorgularında departman bazlı erişim ve bağlamsal filtreleme desteği ekledi. Gemini, kurumsal bilgi tabanı sorgularında departman bazlı erişim ve bağlamsal fi... example.com Gemini gemini-briefing Kurumsal Donusum Kurumsal Etki Gemini, kurumsal bilgi tabanı sorgularında departman bazlı erişim ve bağlamsal filtreleme desteği ekledi. Küresel Genel" data-organization="Gemini" data-theme="Kurumsal Donusum" data-document="gemini-briefing" data-document-label="Gemini Briefing" data-source="example.com" data-keywords="Kurumsal Etki" data-importance="46" data-index="6" data-expanded="false" data-region="Küresel" data-category="Genel">
+  <div class="card-top">
+    <div class="card-index">07</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-7')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Kurumsal Donusum</div>
+  <div class="card-meta-badges">
+    <span class="region-badge region-küresel">Küresel</span>
+    <span class="toc-cat-badge cat-genel">Genel</span>
+  </div>
+  <div class="card-body">Gemini, kurumsal bilgi tabanı sorgularında departman bazlı erişim ve bağlamsal filtreleme desteği ekledi.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Kurumsal Etki</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 46/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>Gemini, kurumsal bilgi tabanı sorgularında departman bazlı erişim ve bağlamsal filtreleme desteği ekledi.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">Gemini, kurumsal bilgi tabanı sorgularında departman bazlı erişim ve bağlamsal filtreleme desteği ekledi.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Platform ve urun yol haritasi etkisi belirgin. Haber Gemini ekseninde kurumsal donusum basligina oturuyor; izleme etiketleri: Kurumsal Etki.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Gemini Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/gemini-enterprise-7" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'Gemini')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: Gemini | Dokuman: Gemini Briefing</span>
+  </footer>
+</article>
+        </section>
+      </div>
+    </section>
+  </main>
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle('light');
+      const isLight = document.body.classList.contains('light');
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    }
+    
+    // Init theme
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+      document.body.classList.add('light');
+    }
+
+    function applyFilters() {
+      const query = document.getElementById("news-search").value.toLowerCase().trim();
+      const organization = document.getElementById("institution-filter").value.toLowerCase().trim();
+      const theme = document.getElementById("theme-filter").value.toLowerCase().trim();
+      const documentName = document.getElementById("document-filter").value.toLowerCase().trim();
+      const source = document.getElementById("source-filter").value.toLowerCase().trim();
+      const keyword = document.getElementById("keyword-filter").value.toLowerCase().trim();
+      const region = document.getElementById("region-filter").value.toLowerCase().trim();
+      const category = document.getElementById("category-filter").value.toLowerCase().trim();
+      
+      const cards = Array.from(document.querySelectorAll(".news-card"));
+      let visibleCount = 0;
+      const execMode = document.body.classList.contains("exec-compact");
+      const executiveLimit = 5;
+
+      for (const card of cards) {
+        const haystack = (card.dataset.search || "").toLowerCase();
+        const cardOrganization = (card.dataset.organization || "").toLowerCase();
+        const cardTheme = (card.dataset.theme || "").toLowerCase();
+        const cardDocument = (card.dataset.document || "").toLowerCase();
+        const cardSource = (card.dataset.source || "").toLowerCase();
+        const keywordHaystack = (card.dataset.keywords || "").toLowerCase();
+        const cardRegion = (card.dataset.region || "").toLowerCase();
+        const cardCategory = (card.dataset.category || "").toLowerCase();
+
+        const matchesSearch = query === "" || haystack.includes(query);
+        const matchesOrganization = organization === "" || cardOrganization === organization;
+        const matchesTheme = theme === "" || cardTheme === theme;
+        const matchesDocument = documentName === "" || cardDocument === documentName;
+        const matchesSource = source === "" || cardSource === source;
+        const matchesKeyword = keyword === "" || keywordHaystack.includes(keyword) || haystack.includes(keyword);
+        const matchesRegion = region === "" || cardRegion === region;
+        const matchesCategory = category === "" || cardCategory === category;
+
+        const visible = matchesSearch && matchesOrganization && matchesTheme && matchesDocument && matchesSource && matchesKeyword && matchesRegion && matchesCategory;
+        card.hidden = !visible;
+        if (visible) {
+          visibleCount += 1;
+        }
+      }
+
+      if (execMode) {
+        let shown = 0;
+        for (const card of cards) {
+          if (card.hidden) {
+            continue;
+          }
+          shown += 1;
+          if (shown > executiveLimit) {
+            card.hidden = true;
+          }
+        }
+        visibleCount = Math.min(visibleCount, executiveLimit);
+      }
+
+      document.getElementById("results-count").textContent = "Gosterilen " + visibleCount + " / 7 haber";
+      syncActiveFilterChips();
+      syncTOCVisibility();
+    }
+
+    function filterCards() {
+      applyFilters();
+    }
+
+    function sortCards() {
+      const grid = document.querySelector(".grid");
+      const cards = Array.from(grid.querySelectorAll(".news-card"));
+      const order = document.getElementById("sort-order").value;
+
+      cards.sort((left, right) => {
+        if (order === "importance-desc") {
+          return Number(right.dataset.importance || 0) - Number(left.dataset.importance || 0);
+        }
+        if (order === "organization-asc") {
+          return (left.dataset.organization || "").localeCompare(right.dataset.organization || "", "tr");
+        }
+        if (order === "theme-asc") {
+          return (left.dataset.theme || "").localeCompare(right.dataset.theme || "", "tr");
+        }
+        if (order === "document-asc") {
+          return (left.dataset.documentLabel || "").localeCompare(right.dataset.documentLabel || "", "tr");
+        }
+        return Number(left.dataset.index || 0) - Number(right.dataset.index || 0);
+      });
+
+      for (const card of cards) {
+        grid.appendChild(card);
+      }
+
+      applyFilters();
+    }
+
+    function syncActiveFilterChips() {
+      const chipHost = document.getElementById("active-filter-chips");
+      const definitions = [
+        ["Arama", "news-search"],
+        ["Kurum", "institution-filter"],
+        ["Tema", "theme-filter"],
+        ["Dokuman", "document-filter"],
+        ["Kaynak", "source-filter"],
+        ["Kelime", "keyword-filter"],
+        ["Bolge", "region-filter"],
+        ["Kategori", "category-filter"]
+      ];
+      const chips = [];
+
+      for (const [label, id] of definitions) {
+        const field = document.getElementById(id);
+        if (!field) continue;
+        const value = (field.value || "").trim();
+        if (!value) {
+          continue;
+        }
+        chips.push('<span class="active-chip">' + label + ': ' + value + ' <button type="button" onclick="clearFilter(\'' + id + '\')">Temizle</button></span>');
+      }
+
+      chipHost.innerHTML = chips.join("");
+      chipHost.hidden = chips.length === 0;
+    }
+
+    function syncTOCVisibility() {
+      const cards = Array.from(document.querySelectorAll(".news-card"));
+      const visibleIndices = new Set(
+        cards.filter(c => !c.hidden).map(c => Number(c.dataset.index) + 1)
+      );
+      
+      const tocItems = Array.from(document.querySelectorAll(".toc-item"));
+      tocItems.forEach(item => {
+        const idx = Number(item.dataset.tocIndex);
+        if (visibleIndices.has(idx)) {
+          item.style.display = "";
+        } else {
+          item.style.display = "none";
+        }
+      });
+      
+      const tocGroups = Array.from(document.querySelectorAll(".toc-region-group"));
+      tocGroups.forEach(group => {
+        const groupItems = Array.from(group.querySelectorAll(".toc-item"));
+        const hasVisible = groupItems.some(item => item.style.display !== "none");
+        group.style.display = hasVisible ? "" : "none";
+      });
+    }
+
+    function clearFilter(id) {
+      const field = document.getElementById(id);
+      if (field) {
+        field.value = "";
+      }
+      if (id === "sort-order") {
+        sortCards();
+        return;
+      }
+      applyFilters();
+    }
+
+    function setFilterValue(id, value) {
+      const field = document.getElementById(id);
+      if (field) {
+        field.value = value;
+      }
+      applyFilters();
+    }
+
+    function toggleCardExpansion(cardId) {
+      const card = document.getElementById(cardId);
+      const nextState = card.dataset.expanded !== "true";
+      card.dataset.expanded = nextState ? "true" : "false";
+      const toggle = card.querySelector("[data-expand-toggle]");
+      if (toggle) {
+        toggle.textContent = nextState ? "Detayi Daralt" : "Detayi Genislet";
+      }
+    }
+
+    function toggleExecutiveMode() {
+      const button = document.getElementById("exec-mode-toggle");
+      const enabled = !document.body.classList.contains("exec-compact");
+      document.body.classList.toggle("exec-compact", enabled);
+      button.dataset.active = enabled ? "true" : "false";
+      button.textContent = enabled ? "Tam Gorunume Don" : "Yonetici 5 Dakika";
+      applyFilters();
+    }
+
+    function resetFilters() {
+      document.getElementById("news-search").value = "";
+      document.getElementById("institution-filter").value = "";
+      document.getElementById("theme-filter").value = "";
+      document.getElementById("document-filter").value = "";
+      document.getElementById("source-filter").value = "";
+      document.getElementById("keyword-filter").value = "";
+      document.getElementById("region-filter").value = "";
+      document.getElementById("category-filter").value = "";
+      document.getElementById("sort-order").value = "importance-desc";
+      if (document.body.classList.contains("exec-compact")) {
+        document.body.classList.remove("exec-compact");
+        const button = document.getElementById("exec-mode-toggle");
+        button.dataset.active = "false";
+        button.textContent = "Yonetici 5 Dakika";
+      }
+      sortCards();
+      applyFilters();
+    }
+
+    sortCards();
+  </script>
+</body>
+</html>

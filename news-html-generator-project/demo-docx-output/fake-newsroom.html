@@ -1,0 +1,3179 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Vendor Newsroom</title>
+  <style>
+    :root {
+      --bg: #efe7da;
+      --ink: #142033;
+      --muted: #5f6676;
+      --line: rgba(20, 32, 51, 0.12);
+      --card: rgba(255, 250, 244, 0.86);
+      --card-strong: rgba(255, 255, 255, 0.94);
+      --accent: #b45309;
+      --accent-soft: #f59e0b;
+      --support: #0f766e;
+      --shadow: 0 28px 80px rgba(20, 32, 51, 0.12);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Avenir Next", "Segoe UI", "Helvetica Neue", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(180, 83, 9, 0.20), transparent 24%),
+        radial-gradient(circle at bottom right, rgba(15, 118, 110, 0.18), transparent 28%),
+        linear-gradient(180deg, #f8f2e8 0%, #efe7da 100%);
+    }
+    .shell {
+      width: min(1680px, calc(100% - 32px));
+      margin: 24px auto 64px;
+    }
+    .layout-shell {
+      width: 100%;
+    }
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 38px;
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.94), rgba(249,245,238,0.88));
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -60px -80px auto;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(15,118,110,0.18), transparent 68%);
+    }
+    .eyebrow {
+      margin: 0 0 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 0.76rem;
+      color: var(--support);
+      font-weight: 700;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(2.6rem, 6vw, 4.8rem);
+      line-height: 0.92;
+      max-width: 11ch;
+      letter-spacing: -0.04em;
+    }
+    .hero-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(300px, 0.9fr);
+      gap: 24px;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-copy {
+      margin: 18px 0 0;
+      max-width: 56ch;
+      color: var(--muted);
+      font-size: 1.04rem;
+      line-height: 1.75;
+    }
+    .summary-panel {
+      align-self: end;
+      display: grid;
+      gap: 12px;
+      padding: 20px;
+      border-radius: 22px;
+      background: rgba(20, 32, 51, 0.92);
+      color: #f8f5f0;
+    }
+    .summary-kicker {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: rgba(248, 245, 240, 0.68);
+    }
+    .summary-count {
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+    .summary-note {
+      color: rgba(248, 245, 240, 0.76);
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+    .toolbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto auto;
+      gap: 14px;
+      align-items: center;
+      margin-top: 22px;
+      padding: 16px 18px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--card-strong);
+      box-shadow: 0 16px 40px rgba(20, 32, 51, 0.07);
+    }
+    .search-input {
+      width: 100%;
+      border: 1px solid rgba(20, 32, 51, 0.12);
+      border-radius: 14px;
+      padding: 14px 16px;
+      font: inherit;
+      color: var(--ink);
+      background: #fffdfa;
+    }
+    .search-input:focus {
+      outline: 2px solid rgba(180, 83, 9, 0.18);
+      border-color: rgba(180, 83, 9, 0.32);
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(180, 83, 9, 0.08);
+      color: var(--accent);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .toolbar-select {
+      min-width: 210px;
+      border: 1px solid rgba(20, 32, 51, 0.12);
+      border-radius: 14px;
+      padding: 13px 14px;
+      font: inherit;
+      color: var(--ink);
+      background: #fffdfa;
+    }
+    .toggle-button {
+      border: 1px solid rgba(20, 32, 51, 0.12);
+      border-radius: 14px;
+      padding: 13px 16px;
+      font: inherit;
+      font-weight: 800;
+      color: var(--ink);
+      background: rgba(20, 32, 51, 0.06);
+      cursor: pointer;
+    }
+    .toggle-button[data-active="true"] {
+      color: #fffdf9;
+      background: linear-gradient(135deg, var(--support), #14b8a6);
+    }
+    .button {
+      border: 0;
+      border-radius: 14px;
+      padding: 13px 16px;
+      font: inherit;
+      font-weight: 700;
+      color: #fffdf9;
+      background: linear-gradient(135deg, var(--accent), var(--accent-soft));
+      cursor: pointer;
+    }
+    .content-layout {
+      display: grid;
+      grid-template-columns: 320px minmax(0, 1fr);
+      gap: 28px;
+      margin-top: 30px;
+      align-items: start;
+    }
+    .content-stack {
+      display: grid;
+      gap: 28px;
+      min-width: 0;
+    }
+    .active-filter-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: -12px;
+    }
+    .active-filter-chips[hidden] {
+      display: none;
+    }
+    .active-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(20, 32, 51, 0.12);
+      background: rgba(255, 255, 255, 0.76);
+      color: var(--ink);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+    .active-chip button {
+      border: 0;
+      padding: 0;
+      background: transparent;
+      color: var(--accent);
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .filters-sidebar {
+      position: sticky;
+      top: 20px;
+      max-height: calc(100vh - 40px);
+      overflow: hidden;
+      padding: 0;
+      min-height: 0;
+    }
+    .filters-scroll {
+      display: grid;
+      gap: 18px;
+      padding: 24px 22px 28px;
+      overflow-y: auto;
+      max-height: calc(100vh - 40px);
+      min-height: 0;
+      overscroll-behavior: contain;
+    }
+    .filters-group {
+      display: grid;
+      gap: 10px;
+    }
+    .filters-label {
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .filter-input,
+    .filter-select {
+      width: 100%;
+      border: 1px solid rgba(20, 32, 51, 0.12);
+      border-radius: 14px;
+      padding: 12px 14px;
+      font: inherit;
+      color: var(--ink);
+      background: #fffdfa;
+    }
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .filter-pill {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: rgba(20, 32, 51, 0.05);
+      color: var(--ink);
+      font: inherit;
+      font-size: 0.84rem;
+      cursor: pointer;
+    }
+    .filter-help {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.65;
+    }
+    .filter-stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .filter-stat {
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: rgba(20, 32, 51, 0.05);
+      border: 1px solid rgba(20, 32, 51, 0.07);
+    }
+    .filter-stat strong {
+      display: block;
+      font-size: 1.1rem;
+      margin-bottom: 4px;
+    }
+    .filter-stat span {
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+    .filters-actions {
+      display: grid;
+      gap: 10px;
+    }
+    .secondary-button {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 14px;
+      font: inherit;
+      font-weight: 700;
+      color: var(--ink);
+      background: rgba(20, 32, 51, 0.04);
+      cursor: pointer;
+    }
+    .dashboard {
+      display: grid;
+      gap: 24px;
+    }
+    .dashboard-overview {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+    .overview-stat {
+      padding: 24px 24px 22px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,243,236,0.92));
+      box-shadow: 0 18px 50px rgba(20, 32, 51, 0.06);
+    }
+    .overview-label {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .overview-value {
+      font-size: clamp(1.8rem, 2.2vw, 2.5rem);
+      font-weight: 800;
+      line-height: 1;
+    }
+    .overview-note {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.65;
+    }
+    .dashboard-highlights {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(360px, 0.9fr);
+      gap: 24px;
+    }
+    .dashboard-primary {
+      display: grid;
+      gap: 20px;
+    }
+    .dashboard-secondary {
+      display: grid;
+      gap: 20px;
+    }
+    .dashboard-card {
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--card-strong);
+      box-shadow: 0 18px 50px rgba(20, 32, 51, 0.08);
+    }
+    .dashboard-card.compact {
+      padding: 20px 22px;
+    }
+    .dashboard-title {
+      margin: 0 0 14px;
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .toc-list {
+      display: grid;
+      gap: 10px;
+      max-height: 380px;
+      overflow: auto;
+      padding-right: 6px;
+    }
+    .toc-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: rgba(20, 32, 51, 0.05);
+      text-decoration: none;
+      color: var(--ink);
+    }
+    .toc-item strong {
+      font-size: 0.94rem;
+    }
+    .toc-theme {
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+    .dashboard-metrics {
+      display: grid;
+      grid-template-columns: minmax(260px, 0.92fr) minmax(0, 1.08fr);
+      gap: 18px;
+      align-items: start;
+    }
+    .radar-card {
+      position: relative;
+      overflow: hidden;
+    }
+    .radial-stat {
+      display: grid;
+      grid-template-columns: 112px minmax(0, 1fr);
+      gap: 18px;
+      align-items: center;
+    }
+    .radial-ring {
+      --value: 0;
+      width: 128px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(closest-side, #fffdf9 70%, transparent 72% 100%),
+        conic-gradient(var(--support) calc(var(--value) * 1%), rgba(20, 32, 51, 0.08) 0);
+      box-shadow: inset 0 0 0 1px rgba(20, 32, 51, 0.06);
+    }
+    .radial-ring span {
+      font-size: 1.6rem;
+      font-weight: 800;
+    }
+    .radial-copy {
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 0.95rem;
+    }
+    .distribution-list {
+      display: grid;
+      gap: 18px;
+      margin-top: 10px;
+    }
+    .executive-summary {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+      gap: 22px;
+      align-items: start;
+    }
+    .executive-copy {
+      color: var(--ink);
+      line-height: 1.8;
+      font-size: 1rem;
+      margin: 0;
+    }
+    .executive-list {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    .executive-list li + li {
+      margin-top: 8px;
+    }
+    .distribution-row {
+      display: grid;
+      gap: 8px;
+    }
+    .distribution-button,
+    .source-filter-button {
+      border: 0;
+      padding: 0;
+      background: transparent;
+      text-align: left;
+      cursor: pointer;
+      color: inherit;
+      font: inherit;
+    }
+    .distribution-button {
+      display: grid;
+      gap: 8px;
+    }
+    .distribution-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-weight: 700;
+    }
+    .distribution-track {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(20, 32, 51, 0.08);
+      overflow: hidden;
+    }
+    .distribution-fill {
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent), var(--accent-soft));
+    }
+    .source-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0;
+      font-size: 0.94rem;
+    }
+    .source-summary {
+      display: grid;
+      gap: 16px;
+    }
+    .source-highlight {
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(20, 32, 51, 0.05);
+    }
+    .source-highlight strong {
+      display: block;
+      font-size: 1.4rem;
+      margin-bottom: 4px;
+    }
+    .source-highlight span {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+    .source-table th,
+    .source-table td {
+      text-align: left;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(20, 32, 51, 0.08);
+    }
+    .source-filter-button {
+      display: contents;
+    }
+    .stat-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .mini-stat {
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(180, 83, 9, 0.08);
+    }
+    .mini-stat strong {
+      display: block;
+      font-size: 1.25rem;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .mini-stat span {
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 26px;
+      margin-top: 8px;
+    }
+    .news-card {
+      position: relative;
+      overflow: hidden;
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--card);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+    .news-card[data-expanded="false"] .card-expandable {
+      display: none;
+    }
+    .news-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto auto 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent), var(--support));
+    }
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .card-top-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .card-index {
+      display: inline-flex;
+      width: 40px;
+      height: 40px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #162033;
+      color: #fff;
+      font-size: 0.92rem;
+      font-weight: 700;
+    }
+    .source-host {
+      display: inline-flex;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(15, 118, 110, 0.10);
+      color: var(--support);
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+    .theme-badge {
+      display: inline-flex;
+      margin-top: 14px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(180, 83, 9, 0.10);
+      color: var(--accent);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .card-body {
+      margin: 18px 0 22px;
+      color: var(--ink);
+      font-size: 1.08rem;
+      line-height: 1.84;
+      white-space: pre-line;
+    }
+    .news-card[data-expanded="false"] .card-body {
+      display: -webkit-box;
+      -webkit-line-clamp: 6;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .insight-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(240px, 0.9fr);
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+    .detail-sections {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+    .detail-card {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.52);
+    }
+    .detail-title {
+      margin: 0 0 10px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.74rem;
+      font-weight: 800;
+    }
+    .detail-copy {
+      margin: 0;
+      color: var(--ink);
+      line-height: 1.7;
+      font-size: 0.96rem;
+    }
+    .insight-panel {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.58);
+    }
+    .panel-title {
+      margin: 0 0 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.74rem;
+      font-weight: 800;
+    }
+    .insight-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .insight-tags li {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(20, 32, 51, 0.08);
+      color: var(--ink);
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+    .summary-list {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--ink);
+      line-height: 1.6;
+    }
+    .summary-list li + li {
+      margin-top: 8px;
+    }
+    .infographic {
+      display: grid;
+      gap: 12px;
+    }
+    .score-chip {
+      display: inline-flex;
+      width: fit-content;
+      margin-bottom: 14px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(15, 118, 110, 0.10);
+      color: var(--support);
+      font-weight: 800;
+    }
+    .metric {
+      display: grid;
+      gap: 8px;
+    }
+    .metric-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .metric-track {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(20, 32, 51, 0.08);
+      overflow: hidden;
+    }
+    .metric-fill {
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--support), var(--accent-soft));
+    }
+    .card-footer {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(95, 108, 131, 0.16);
+    }
+    .card-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .source-link {
+      color: var(--accent);
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .source-link:hover {
+      text-decoration: underline;
+    }
+    .meta-note {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+    .exec-compact .content-layout {
+      grid-template-columns: 1fr;
+    }
+    .exec-compact .dashboard-highlights,
+    .exec-compact .filters-sidebar,
+    .exec-compact .card-expandable,
+    .exec-compact .meta-note {
+      display: none;
+    }
+    .exec-compact .dashboard-overview {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .exec-compact .content-stack {
+      gap: 20px;
+    }
+    .exec-compact .grid {
+      grid-template-columns: 1fr;
+    }
+    .exec-compact .news-card {
+      padding: 22px;
+    }
+    .exec-compact .card-body {
+      margin-bottom: 0;
+    }
+    .exec-compact .news-card[hidden] {
+      display: none !important;
+    }
+    @media (max-width: 720px) {
+      .shell {
+        width: min(100% - 20px, 1120px);
+        margin-top: 20px;
+      }
+      .hero, .news-card {
+        padding: 22px;
+        border-radius: 22px;
+      }
+      .content-layout,
+      .hero-layout,
+      .toolbar,
+      .dashboard-overview,
+      .dashboard-highlights,
+      .dashboard-secondary,
+      .dashboard-metrics,
+      .executive-summary,
+      .detail-sections,
+      .insight-grid {
+        grid-template-columns: 1fr;
+      }
+      .filters-sidebar {
+        position: static;
+        max-height: none;
+      }
+      .filters-scroll {
+        max-height: none;
+      }
+      .card-footer {
+        align-items: flex-start;
+      }
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      .toolbar-select,
+      .toggle-button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell layout-shell">
+    <section class="hero">
+      <div class="hero-layout">
+        <div>
+          <p class="eyebrow">Günlük Haber Akışı</p>
+          <h1>AI Vendor Newsroom</h1>
+          <p class="hero-copy">Word dokümanındaki haber metinleri korunarak, kapalı ağ içinde güvenle kullanılabilecek tek dosyalık bir HTML bültene dönüştürüldü.</p>
+        </div>
+        <aside class="summary-panel">
+          <div class="summary-kicker">Bülten Özeti</div>
+          <div class="summary-count">Toplam 28 haber</div>
+          <div class="summary-note">Disa bagimli varlik kullanilmaz. Tum stil ve etkilesim ayni HTML dosyasina gomuludur.</div>
+        </aside>
+      </div>
+    </section>
+    <section class="content-layout">
+      <aside class="dashboard-card filters-sidebar">
+  <div class="filters-scroll">
+  <div>
+    <h2 class="dashboard-title">Gelismis Filtreler</h2>
+    <div class="filter-help">Kurum, tema, kaynak dokuman ve anahtar kelimeyi birlikte kullanarak havuzu hizla daraltin. Dropdown alanlari dinamik olarak mevcut DOCX setinden uretilir.</div>
+  </div>
+  <div class="filter-stats">
+      <div class="filter-stat"><strong>4</strong><span>Kurum</span></div>
+      <div class="filter-stat"><strong>3</strong><span>Tema</span></div>
+      <div class="filter-stat"><strong>4</strong><span>Dokuman</span></div>
+      <div class="filter-stat"><strong>28</strong><span>Toplam Haber</span></div>
+    </div>
+  <label class="filters-group" for="institution-filter">
+    <span class="filters-label">Kurum</span>
+    <select id="institution-filter" class="filter-select" onchange="applyFilters()">
+      <option value="">Tum Kurumlar</option>
+      <option value="Anthropic">Anthropic</option><option value="Gemini">Gemini</option><option value="NVIDIA">NVIDIA</option><option value="OpenAI">OpenAI</option>
+    </select>
+  </label>
+  <label class="filters-group" for="theme-filter">
+    <span class="filters-label">Tema</span>
+    <select id="theme-filter" class="filter-select" onchange="applyFilters()">
+      <option value="">Tum Temalar</option>
+      <option value="Kurumsal Donusum">Kurumsal Donusum</option><option value="Otomasyon ve Robotik">Otomasyon ve Robotik</option><option value="Teknoloji Guncellemesi">Teknoloji Guncellemesi</option>
+    </select>
+  </label>
+  <label class="filters-group" for="document-filter">
+    <span class="filters-label">Dokuman</span>
+    <select id="document-filter" class="filter-select" onchange="applyFilters()">
+      <option value="">Tum Dokumanlar</option>
+      <option value="anthropic-briefing">Anthropic Briefing</option><option value="gemini-briefing">Gemini Briefing</option><option value="nvidia-briefing">Nvidia Briefing</option><option value="openai-briefing">Openai Briefing</option>
+    </select>
+  </label>
+  <label class="filters-group" for="source-filter">
+    <span class="filters-label">Kaynak Alan Adi</span>
+    <select id="source-filter" class="filter-select" onchange="applyFilters()">
+      <option value="">Tum Kaynaklar</option>
+      <option value="example.com">example.com</option>
+    </select>
+  </label>
+  <label class="filters-group" for="keyword-filter">
+    <span class="filters-label">Anahtar Kelime</span>
+    <input id="keyword-filter" class="filter-input" type="search" placeholder="Altyapi, ajan, guvenlik..." oninput="applyFilters()">
+  </label>
+  <div class="filters-group">
+    <span class="filters-label">Hizli Etiketler</span>
+    <div class="filter-pills"><button class="filter-pill" type="button" onclick="document.getElementById('keyword-filter').value='Yapay Zeka'; applyFilters()">Yapay Zeka</button><button class="filter-pill" type="button" onclick="document.getElementById('keyword-filter').value='Genel Gundem'; applyFilters()">Genel Gundem</button><button class="filter-pill" type="button" onclick="document.getElementById('keyword-filter').value='Kurumsal Etki'; applyFilters()">Kurumsal Etki</button><button class="filter-pill" type="button" onclick="document.getElementById('keyword-filter').value='Diplomasi'; applyFilters()">Diplomasi</button><button class="filter-pill" type="button" onclick="document.getElementById('keyword-filter').value='Robotik'; applyFilters()">Robotik</button></div>
+  </div>
+  <div class="filters-actions">
+    <button class="secondary-button" type="button" onclick="resetFilters()">Filtreleri Temizle</button>
+  </div>
+  </div>
+</aside>
+      <div class="content-stack">
+        <section class="toolbar">
+          <input id="news-search" class="search-input" type="search" placeholder="Haber metni, kurum, kaynak veya tema ile ara" oninput="filterCards()">
+          <select id="sort-order" class="toolbar-select" onchange="sortCards()">
+            <option value="importance-desc">Oneme Gore</option>
+            <option value="relevance">Varsayilan Sira</option>
+            <option value="organization-asc">Kuruma Gore</option>
+            <option value="theme-asc">Temaya Gore</option>
+            <option value="document-asc">Dokumana Gore</option>
+          </select>
+          <button id="exec-mode-toggle" class="toggle-button" type="button" data-active="false" onclick="toggleExecutiveMode()">Yonetici 5 Dakika</button>
+          <div id="results-count" class="chip">Toplam 28 haber</div>
+          <button class="button" type="button" onclick="window.print()">Yazdir veya PDF Al</button>
+        </section>
+        <div id="active-filter-chips" class="active-filter-chips" hidden></div>
+        <section class="dashboard">
+  <section class="dashboard-overview">
+    <article class="overview-stat">
+      <p class="overview-label">Toplam Haber</p>
+      <div class="overview-value">28</div>
+      <div class="overview-note">Tek sayfada toplanan toplam kayit.</div>
+    </article>
+    <article class="overview-stat">
+      <p class="overview-label">Ortalama Onem</p>
+      <div class="overview-value">49</div>
+      <div class="overview-note">Genel kurumsal etki seviyesi.</div>
+    </article>
+    <article class="overview-stat">
+      <p class="overview-label">Baskin Tema</p>
+      <div class="overview-value">Teknoloji Guncellemesi</div>
+      <div class="overview-note">16 haber ile en yogun konu.</div>
+    </article>
+    <article class="overview-stat">
+      <p class="overview-label">Baskin Kaynak</p>
+      <div class="overview-value">example.com</div>
+      <div class="overview-note">%100 pay ile en cok gecen alan adi.</div>
+    </article>
+  </section>
+  <section class="dashboard-card executive-summary">
+    <div>
+      <h2 class="dashboard-title">Yonetici Ozeti</h2>
+      <p class="executive-copy">Bu hafta one cikan gelismeler agirlikli olarak teknoloji guncellemesi ekseninde toplandi. Okuma havuzu Anthropic, Gemini, NVIDIA, OpenAI kurumlari uzerinde yogunlasirken, yonetici takibi icin tema dagilimi ve kaynak akisi birlikte izlenmeli.</p>
+    </div>
+    <div>
+      <h2 class="dashboard-title">Bu hafta one cikan gelismeler</h2>
+      <ul class="executive-list"><li>Toplam 28 haber, 4 farkli kurum ve 3 tema altinda toplandi.</li><li>Baskin tema Teknoloji Guncellemesi; toplam havuz icindeki payi %57 seviyesinde.</li><li>Kaynak akisinda example.com baskin; izleme yogunlugu bu alanda toplanmis durumda.</li></ul>
+    </div>
+  </section>
+  <section class="dashboard-highlights">
+    <section class="dashboard-primary">
+      <div class="dashboard-card compact">
+        <h2 class="dashboard-title">Icerik Indeksi</h2>
+        <div class="toc-list"><a class="toc-item" href="#news-1">
+  <div>
+    <strong>Anthropic / Haber 01</strong>
+    <div class="toc-theme">Anthropic, üretim ortamlarında güvenlik katmanlarını güçlendiren yeni anayasa tab...</div>
+  </div>
+  <span>Teknoloji Guncellemesi</span>
+</a><a class="toc-item" href="#news-2">
+  <div>
+    <strong>Anthropic / Haber 02</strong>
+    <div class="toc-theme">Anthropic, yüksek riskli iş akışlarında model yanıtlarını sınıflandıran yeni güve...</div>
+  </div>
+  <span>Kurumsal Donusum</span>
+</a><a class="toc-item" href="#news-3">
+  <div>
+    <strong>Anthropic / Haber 03</strong>
+    <div class="toc-theme">Anthropic, kurumsal müşteriler için erişim kayıtlarını tek merkezde toplayan yöne...</div>
+  </div>
+  <span>Kurumsal Donusum</span>
+</a><a class="toc-item" href="#news-4">
+  <div>
+    <strong>Anthropic / Haber 04</strong>
+    <div class="toc-theme">Anthropic, güvenlik ve hukuk ekiplerinin birlikte inceleme yapabilmesi için yeni...</div>
+  </div>
+  <span>Teknoloji Guncellemesi</span>
+</a><a class="toc-item" href="#news-5">
+  <div>
+    <strong>Anthropic / Haber 05</strong>
+    <div class="toc-theme">Anthropic, servis sürekliliğini artırmak için model yönlendirme ve yedekleme stra...</div>
+  </div>
+  <span>Kurumsal Donusum</span>
+</a><a class="toc-item" href="#news-6">
+  <div>
+    <strong>Anthropic / Haber 06</strong>
+    <div class="toc-theme">Anthropic, hassas veri kullanan şirketlere yönelik filtre ve politika şablonların...</div>
+  </div>
+  <span>Teknoloji Guncellemesi</span>
+</a><a class="toc-item" href="#news-7">
+  <div>
+    <strong>Anthropic / Haber 07</strong>
+    <div class="toc-theme">Anthropic, yönetişim ekipleri için çıktı denetimi ve geri bildirim döngülerini te...</div>
+  </div>
+  <span>Teknoloji Guncellemesi</span>
+</a><a class="toc-item" href="#news-8">
+  <div>
+    <strong>Gemini / Haber 08</strong>
+    <div class="toc-theme">Gemini, çok modlu arama ve doküman özetleme iş akışlarını tek panelde birleştiren...</div>
+  </div>
+  <span>Teknoloji Guncellemesi</span>
+</a><a class="toc-item" href="#news-9">
+  <div>
+    <strong>Gemini / Haber 09</strong>
+    <div class="toc-theme">Gemini, ekiplerin video, görsel ve metin üzerinden birlikte araştırma yapmasını s...</div>
+  </div>
+  <span>Teknoloji Guncellemesi</span>
+</a><a class="toc-item" href="#news-10">
+  <div>
+    <strong>Gemini / Haber 10</strong>
+    <div class="toc-theme">Gemini, kurumsal arama sonuçlarında kaynak puanlaması ve öne çıkan risk notları g...</div>
+  </div>
+  <span>Kurumsal Donusum</span>
+</a><a class="toc-item" href="#news-11">
+  <div>
+    <strong>Gemini / Haber 11</strong>
+    <div class="toc-theme">Gemini, satış ekipleri için toplantı notları ile CRM özetlerini otomatik ilişkile...</div>
+  </div>
+  <span>Teknoloji Guncellemesi</span>
+</a><a class="toc-item" href="#news-12">
+  <div>
+    <strong>Gemini / Haber 12</strong>
+    <div class="toc-theme">Gemini, ofis belgeleri üzerinde çok adımlı analiz yapabilen ajan benzeri öneri ak...</div>
+  </div>
+  <span>Kurumsal Donusum</span>
+</a><a class="toc-item" href="#news-13">
+  <div>
+    <strong>Gemini / Haber 13</strong>
+    <div class="toc-theme">Gemini, görsel içerikten tablo çıkarımı ve yönetici özeti üretimini aynı yan pane...</div>
+  </div>
+  <span>Teknoloji Guncellemesi</span>
+</a><a class="toc-item" href="#news-14">
+  <div>
+    <strong>Gemini / Haber 14</strong>
+    <div class="toc-theme">Gemini, kurumsal bilgi tabanı sorgularında departman bazlı erişim ve bağlamsal fi...</div>
+  </div>
+  <span>Kurumsal Donusum</span>
+</a><a class="toc-item" href="#news-15">
+  <div>
+    <strong>NVIDIA / Haber 15</strong>
+    <div class="toc-theme">NVIDIA, veri merkezi ölçeğinde yapay zeka çıkarımı için yeni hızlandırıcı mimaris...</div>
+  </div>
+  <span>Teknoloji Guncellemesi</span>
+</a><a class="toc-item" href="#news-16">
+  <div>
+    <strong>NVIDIA / Haber 16</strong>
+    <div class="toc-theme">NVIDIA, kurum içi model servisleri için GPU kullanımını dengeleyen yeni orkestras...</div>
+  </div>
+  <span>Kurumsal Donusum</span>
+</a><a class="toc-item" href="#news-17">
+  <div>
+    <strong>NVIDIA / Haber 17</strong>
+    <div class="toc-theme">NVIDIA, çoklu raf dağıtımlarında enerji verimliliğini yükselten yeni soğutma ve t...</div>
+  </div>
+  <span>Teknoloji Guncellemesi</span>
+</a><a class="toc-item" href="#news-18">
+  <div>
+    <strong>NVIDIA / Haber 18</strong>
+    <div class="toc-theme">NVIDIA, güvenlik ekiplerine yönelik AI iş yükü anomali tespiti için yeni gözlemle...</div>
+  </div>
+  <span>Teknoloji Guncellemesi</span>
+</a><a class="toc-item" href="#news-19">
+  <div>
+    <strong>NVIDIA / Haber 19</strong>
+    <div class="toc-theme">NVIDIA, büyük ölçekli eğitim ve çıkarım kümelerinde ağ darboğazını azaltan yeni y...</div>
+  </div>
+  <span>Teknoloji Guncellemesi</span>
+</a><a class="toc-item" href="#news-20">
+  <div>
+    <strong>NVIDIA / Haber 20</strong>
+    <div class="toc-theme">NVIDIA, video üretim ve analiz iş akışlarında gerçek zamanlı hızlandırma sunan ye...</div>
+  </div>
+  <span>Teknoloji Guncellemesi</span>
+</a><a class="toc-item" href="#news-21">
+  <div>
+    <strong>NVIDIA / Haber 21</strong>
+    <div class="toc-theme">NVIDIA, kurumsal yapay zeka platformları için referans mimari ve operasyonel izle...</div>
+  </div>
+  <span>Kurumsal Donusum</span>
+</a><a class="toc-item" href="#news-22">
+  <div>
+    <strong>OpenAI / Haber 22</strong>
+    <div class="toc-theme">OpenAI, kurumsal ekipler için yeni ajan orkestrasyon panelini duyurdu ve model yö...</div>
+  </div>
+  <span>Kurumsal Donusum</span>
+</a><a class="toc-item" href="#news-23">
+  <div>
+    <strong>OpenAI / Haber 23</strong>
+    <div class="toc-theme">OpenAI, finans ekiplerine yönelik denetlenebilir özetleme akışlarını yeni API pol...</div>
+  </div>
+  <span>Teknoloji Guncellemesi</span>
+</a><a class="toc-item" href="#news-24">
+  <div>
+    <strong>OpenAI / Haber 24</strong>
+    <div class="toc-theme">OpenAI, geliştirici ekipleri için çok adımlı görev otomasyonu ve değerlendirme ar...</div>
+  </div>
+  <span>Otomasyon ve Robotik</span>
+</a><a class="toc-item" href="#news-25">
+  <div>
+    <strong>OpenAI / Haber 25</strong>
+    <div class="toc-theme">OpenAI, müşteri destek senaryolarında ajanların kalite kontrolünü hızlandıran yen...</div>
+  </div>
+  <span>Kurumsal Donusum</span>
+</a><a class="toc-item" href="#news-26">
+  <div>
+    <strong>OpenAI / Haber 26</strong>
+    <div class="toc-theme">OpenAI, şirket içi arama ve bilgi tabanı kullanımını birleştiren yeni çalışma ala...</div>
+  </div>
+  <span>Teknoloji Guncellemesi</span>
+</a><a class="toc-item" href="#news-27">
+  <div>
+    <strong>OpenAI / Haber 27</strong>
+    <div class="toc-theme">OpenAI, güvenlik ekipleri için kırmızı takım bulgularını politika yapılandırmalar...</div>
+  </div>
+  <span>Teknoloji Guncellemesi</span>
+</a><a class="toc-item" href="#news-28">
+  <div>
+    <strong>OpenAI / Haber 28</strong>
+    <div class="toc-theme">OpenAI, çok dilli kurumsal dağıtımlar için yönetim konsoluna bölgesel denetim ve...</div>
+  </div>
+  <span>Kurumsal Donusum</span>
+</a></div>
+      </div>
+      <div class="dashboard-metrics">
+        <section class="dashboard-card compact">
+          <div class="radar-card">
+            <h2 class="dashboard-title">Gundem Nabzi</h2>
+            <div class="radial-stat">
+              <div class="radial-ring" style="--value: 49">
+                <span>49</span>
+              </div>
+              <div class="radial-copy">Onem skoru, etiket yogunlugu ve operasyon baglamini tek bakista ozetler.</div>
+            </div>
+            <div class="stat-strip">
+              <div class="mini-stat"><strong>5</strong><span>Aktif Etiket</span></div>
+              <div class="mini-stat"><strong>40</strong><span>Gundem Indeksi</span></div>
+              <div class="mini-stat"><strong>3</strong><span>Tema Sayisi</span></div>
+            </div>
+          </div>
+        </section>
+      <section class="dashboard-card compact">
+        <h2 class="dashboard-title">Tema Dagilimi</h2>
+        <div class="distribution-list"><div class="distribution-row">
+  <button class="distribution-button" type="button" data-theme-filter="Teknoloji Guncellemesi" onclick="setFilterValue('theme-filter', 'Teknoloji Guncellemesi')">
+    <div class="distribution-head">
+      <span>Teknoloji Guncellemesi</span>
+      <span>%57</span>
+    </div>
+    <div class="distribution-track">
+      <div class="distribution-fill" style="width: 57%"></div>
+    </div>
+  </button>
+</div><div class="distribution-row">
+  <button class="distribution-button" type="button" data-theme-filter="Kurumsal Donusum" onclick="setFilterValue('theme-filter', 'Kurumsal Donusum')">
+    <div class="distribution-head">
+      <span>Kurumsal Donusum</span>
+      <span>%39</span>
+    </div>
+    <div class="distribution-track">
+      <div class="distribution-fill" style="width: 39%"></div>
+    </div>
+  </button>
+</div><div class="distribution-row">
+  <button class="distribution-button" type="button" data-theme-filter="Otomasyon ve Robotik" onclick="setFilterValue('theme-filter', 'Otomasyon ve Robotik')">
+    <div class="distribution-head">
+      <span>Otomasyon ve Robotik</span>
+      <span>%4</span>
+    </div>
+    <div class="distribution-track">
+      <div class="distribution-fill" style="width: 4%"></div>
+    </div>
+  </button>
+</div></div>
+      </section>
+      </div>
+    </section>
+    <section class="dashboard-secondary">
+      <section class="dashboard-card compact">
+        <h2 class="dashboard-title">Kaynak Yogunlugu</h2>
+        <div class="source-summary">
+          <div class="source-highlight">
+            <strong>example.com</strong>
+            <span>En baskin alan adi. Toplam 28 haber ve %100 pay.</span>
+          </div>
+          <table class="source-table">
+            <thead><tr><th>Kaynak</th><th>Adet</th><th>Pay</th></tr></thead>
+            <tbody><tr>
+          <td><button class="source-filter-button" type="button" data-source-filter="example.com" onclick="setFilterValue('source-filter', 'example.com')">example.com</button></td>
+          <td>28</td>
+          <td>%100</td>
+        </tr></tbody>
+          </table>
+        </div>
+      </section>
+      <section class="dashboard-card compact">
+        <h2 class="dashboard-title">Kapsam Notu</h2>
+        <div class="radial-copy">Bu alan sabit bir doldurma kutusu gibi degil, dashboard akisina ritim veren kisa bir baglam notu olarak dusunuldu. Amac yogunlugu tek yere yigmak yerine goze nefes alacak araliklar birakmak.</div>
+      </section>
+    </section>
+  </section>
+</section>
+        <section class="grid">
+          <article id="news-1" class="news-card" data-search="Anthropic, üretim ortamlarında güvenlik katmanlarını güçlendiren yeni anayasa tabanlı denetim akışını duyurdu. Anthropic, üretim ortamlarında güvenlik katmanlarını güçlendiren yeni anayasa tab... example.com Anthropic anthropic-briefing Teknoloji Guncellemesi Genel Gundem Anthropic, üretim ortamlarında güvenlik katmanlarını güçlendiren yeni anayasa tabanlı denetim akışını duyurdu." data-organization="Anthropic" data-theme="Teknoloji Guncellemesi" data-document="anthropic-briefing" data-document-label="Anthropic Briefing" data-source="example.com" data-keywords="Genel Gundem" data-importance="46" data-index="0" data-expanded="false">
+  <div class="card-top">
+    <div class="card-index">01</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-1')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Teknoloji Guncellemesi</div>
+  <div class="card-body">Anthropic, üretim ortamlarında güvenlik katmanlarını güçlendiren yeni anayasa tabanlı denetim akışını duyurdu.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Genel Gundem</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 46/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>Anthropic, üretim ortamlarında güvenlik katmanlarını güçlendiren yeni anayasa tabanlı denetim akışını duyurdu.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">Anthropic, üretim ortamlarında güvenlik katmanlarını güçlendiren yeni anayasa tabanlı denetim akışını duyurdu.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Platform ve urun yol haritasi etkisi belirgin. Haber Anthropic ekseninde teknoloji guncellemesi basligina oturuyor; izleme etiketleri: Genel Gundem.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Anthropic Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/anthropic-safety-1" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'Anthropic')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: Anthropic | Dokuman: Anthropic Briefing</span>
+  </footer>
+</article>
+<article id="news-2" class="news-card" data-search="Anthropic, yüksek riskli iş akışlarında model yanıtlarını sınıflandıran yeni güvence politikasını paylaştı. Anthropic, yüksek riskli iş akışlarında model yanıtlarını sınıflandıran yeni güve... example.com Anthropic anthropic-briefing Kurumsal Donusum Yapay Zeka Anthropic, yüksek riskli iş akışlarında model yanıtlarını sınıflandıran yeni güvence politikasını paylaştı." data-organization="Anthropic" data-theme="Kurumsal Donusum" data-document="anthropic-briefing" data-document-label="Anthropic Briefing" data-source="example.com" data-keywords="Yapay Zeka" data-importance="46" data-index="1" data-expanded="false">
+  <div class="card-top">
+    <div class="card-index">02</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-2')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Kurumsal Donusum</div>
+  <div class="card-body">Anthropic, yüksek riskli iş akışlarında model yanıtlarını sınıflandıran yeni güvence politikasını paylaştı.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Yapay Zeka</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 46/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>Anthropic, yüksek riskli iş akışlarında model yanıtlarını sınıflandıran yeni güvence politikasını paylaştı.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">Anthropic, yüksek riskli iş akışlarında model yanıtlarını sınıflandıran yeni güvence politikasını paylaştı.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Platform ve urun yol haritasi etkisi belirgin. Haber Anthropic ekseninde kurumsal donusum basligina oturuyor; izleme etiketleri: Yapay Zeka.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Anthropic Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/anthropic-policy-2" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'Anthropic')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: Anthropic | Dokuman: Anthropic Briefing</span>
+  </footer>
+</article>
+<article id="news-3" class="news-card" data-search="Anthropic, kurumsal müşteriler için erişim kayıtlarını tek merkezde toplayan yönetim panelini tanıttı. Anthropic, kurumsal müşteriler için erişim kayıtlarını tek merkezde toplayan yöne... example.com Anthropic anthropic-briefing Kurumsal Donusum Kurumsal Etki Anthropic, kurumsal müşteriler için erişim kayıtlarını tek merkezde toplayan yönetim panelini tanıttı." data-organization="Anthropic" data-theme="Kurumsal Donusum" data-document="anthropic-briefing" data-document-label="Anthropic Briefing" data-source="example.com" data-keywords="Kurumsal Etki" data-importance="46" data-index="2" data-expanded="false">
+  <div class="card-top">
+    <div class="card-index">03</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-3')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Kurumsal Donusum</div>
+  <div class="card-body">Anthropic, kurumsal müşteriler için erişim kayıtlarını tek merkezde toplayan yönetim panelini tanıttı.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Kurumsal Etki</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 46/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>Anthropic, kurumsal müşteriler için erişim kayıtlarını tek merkezde toplayan yönetim panelini tanıttı.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">Anthropic, kurumsal müşteriler için erişim kayıtlarını tek merkezde toplayan yönetim panelini tanıttı.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Platform ve urun yol haritasi etkisi belirgin. Haber Anthropic ekseninde kurumsal donusum basligina oturuyor; izleme etiketleri: Kurumsal Etki.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Anthropic Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/anthropic-admin-3" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'Anthropic')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: Anthropic | Dokuman: Anthropic Briefing</span>
+  </footer>
+</article>
+<article id="news-4" class="news-card" data-search="Anthropic, güvenlik ve hukuk ekiplerinin birlikte inceleme yapabilmesi için yeni olay değerlendirme arayüzünü açtı. Anthropic, güvenlik ve hukuk ekiplerinin birlikte inceleme yapabilmesi için yeni... example.com Anthropic anthropic-briefing Teknoloji Guncellemesi Genel Gundem Anthropic, güvenlik ve hukuk ekiplerinin birlikte inceleme yapabilmesi için yeni olay değerlendirme arayüzünü açtı." data-organization="Anthropic" data-theme="Teknoloji Guncellemesi" data-document="anthropic-briefing" data-document-label="Anthropic Briefing" data-source="example.com" data-keywords="Genel Gundem" data-importance="46" data-index="3" data-expanded="false">
+  <div class="card-top">
+    <div class="card-index">04</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-4')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Teknoloji Guncellemesi</div>
+  <div class="card-body">Anthropic, güvenlik ve hukuk ekiplerinin birlikte inceleme yapabilmesi için yeni olay değerlendirme arayüzünü açtı.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Genel Gundem</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 46/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>Anthropic, güvenlik ve hukuk ekiplerinin birlikte inceleme yapabilmesi için yeni olay değerlendirme arayüzünü açtı.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">Anthropic, güvenlik ve hukuk ekiplerinin birlikte inceleme yapabilmesi için yeni olay değerlendirme arayüzünü açtı.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Platform ve urun yol haritasi etkisi belirgin. Haber Anthropic ekseninde teknoloji guncellemesi basligina oturuyor; izleme etiketleri: Genel Gundem.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Anthropic Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/anthropic-incident-4" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'Anthropic')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: Anthropic | Dokuman: Anthropic Briefing</span>
+  </footer>
+</article>
+<article id="news-5" class="news-card" data-search="Anthropic, servis sürekliliğini artırmak için model yönlendirme ve yedekleme stratejilerinde güncellemeye gitti. Anthropic, servis sürekliliğini artırmak için model yönlendirme ve yedekleme stra... example.com Anthropic anthropic-briefing Kurumsal Donusum Yapay Zeka Anthropic, servis sürekliliğini artırmak için model yönlendirme ve yedekleme stratejilerinde güncellemeye gitti." data-organization="Anthropic" data-theme="Kurumsal Donusum" data-document="anthropic-briefing" data-document-label="Anthropic Briefing" data-source="example.com" data-keywords="Yapay Zeka" data-importance="46" data-index="4" data-expanded="false">
+  <div class="card-top">
+    <div class="card-index">05</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-5')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Kurumsal Donusum</div>
+  <div class="card-body">Anthropic, servis sürekliliğini artırmak için model yönlendirme ve yedekleme stratejilerinde güncellemeye gitti.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Yapay Zeka</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 46/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>57</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 57%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>Anthropic, servis sürekliliğini artırmak için model yönlendirme ve yedekleme stratejilerinde güncellemeye gitti.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">Anthropic, servis sürekliliğini artırmak için model yönlendirme ve yedekleme stratejilerinde güncellemeye gitti.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Platform ve urun yol haritasi etkisi belirgin. Haber Anthropic ekseninde kurumsal donusum basligina oturuyor; izleme etiketleri: Yapay Zeka.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Anthropic Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/anthropic-resilience-5" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'Anthropic')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: Anthropic | Dokuman: Anthropic Briefing</span>
+  </footer>
+</article>
+<article id="news-6" class="news-card" data-search="Anthropic, hassas veri kullanan şirketlere yönelik filtre ve politika şablonlarını genişletti. Anthropic, hassas veri kullanan şirketlere yönelik filtre ve politika şablonların... example.com Anthropic anthropic-briefing Teknoloji Guncellemesi Genel Gundem Anthropic, hassas veri kullanan şirketlere yönelik filtre ve politika şablonlarını genişletti." data-organization="Anthropic" data-theme="Teknoloji Guncellemesi" data-document="anthropic-briefing" data-document-label="Anthropic Briefing" data-source="example.com" data-keywords="Genel Gundem" data-importance="46" data-index="5" data-expanded="false">
+  <div class="card-top">
+    <div class="card-index">06</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-6')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Teknoloji Guncellemesi</div>
+  <div class="card-body">Anthropic, hassas veri kullanan şirketlere yönelik filtre ve politika şablonlarını genişletti.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Genel Gundem</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 46/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>Anthropic, hassas veri kullanan şirketlere yönelik filtre ve politika şablonlarını genişletti.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">Anthropic, hassas veri kullanan şirketlere yönelik filtre ve politika şablonlarını genişletti.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Platform ve urun yol haritasi etkisi belirgin. Haber Anthropic ekseninde teknoloji guncellemesi basligina oturuyor; izleme etiketleri: Genel Gundem.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Anthropic Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/anthropic-data-6" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'Anthropic')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: Anthropic | Dokuman: Anthropic Briefing</span>
+  </footer>
+</article>
+<article id="news-7" class="news-card" data-search="Anthropic, yönetişim ekipleri için çıktı denetimi ve geri bildirim döngülerini tek akışta birleştirdi. Anthropic, yönetişim ekipleri için çıktı denetimi ve geri bildirim döngülerini te... example.com Anthropic anthropic-briefing Teknoloji Guncellemesi Genel Gundem Anthropic, yönetişim ekipleri için çıktı denetimi ve geri bildirim döngülerini tek akışta birleştirdi." data-organization="Anthropic" data-theme="Teknoloji Guncellemesi" data-document="anthropic-briefing" data-document-label="Anthropic Briefing" data-source="example.com" data-keywords="Genel Gundem" data-importance="46" data-index="6" data-expanded="false">
+  <div class="card-top">
+    <div class="card-index">07</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-7')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Teknoloji Guncellemesi</div>
+  <div class="card-body">Anthropic, yönetişim ekipleri için çıktı denetimi ve geri bildirim döngülerini tek akışta birleştirdi.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Genel Gundem</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 46/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>Anthropic, yönetişim ekipleri için çıktı denetimi ve geri bildirim döngülerini tek akışta birleştirdi.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">Anthropic, yönetişim ekipleri için çıktı denetimi ve geri bildirim döngülerini tek akışta birleştirdi.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Platform ve urun yol haritasi etkisi belirgin. Haber Anthropic ekseninde teknoloji guncellemesi basligina oturuyor; izleme etiketleri: Genel Gundem.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Anthropic Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/anthropic-governance-7" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'Anthropic')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: Anthropic | Dokuman: Anthropic Briefing</span>
+  </footer>
+</article>
+<article id="news-8" class="news-card" data-search="Gemini, çok modlu arama ve doküman özetleme iş akışlarını tek panelde birleştiren yeni çalışma alanını tanıttı. Gemini, çok modlu arama ve doküman özetleme iş akışlarını tek panelde birleştiren... example.com Gemini gemini-briefing Teknoloji Guncellemesi Genel Gundem Gemini, çok modlu arama ve doküman özetleme iş akışlarını tek panelde birleştiren yeni çalışma alanını tanıttı." data-organization="Gemini" data-theme="Teknoloji Guncellemesi" data-document="gemini-briefing" data-document-label="Gemini Briefing" data-source="example.com" data-keywords="Genel Gundem" data-importance="46" data-index="7" data-expanded="false">
+  <div class="card-top">
+    <div class="card-index">08</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-8')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Teknoloji Guncellemesi</div>
+  <div class="card-body">Gemini, çok modlu arama ve doküman özetleme iş akışlarını tek panelde birleştiren yeni çalışma alanını tanıttı.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Genel Gundem</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 46/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>Gemini, çok modlu arama ve doküman özetleme iş akışlarını tek panelde birleştiren yeni çalışma alanını tanıttı.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">Gemini, çok modlu arama ve doküman özetleme iş akışlarını tek panelde birleştiren yeni çalışma alanını tanıttı.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Platform ve urun yol haritasi etkisi belirgin. Haber Gemini ekseninde teknoloji guncellemesi basligina oturuyor; izleme etiketleri: Genel Gundem.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Gemini Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/gemini-workspace-1" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'Gemini')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: Gemini | Dokuman: Gemini Briefing</span>
+  </footer>
+</article>
+<article id="news-9" class="news-card" data-search="Gemini, ekiplerin video, görsel ve metin üzerinden birlikte araştırma yapmasını sağlayan ortak oturum modunu duyurdu. Gemini, ekiplerin video, görsel ve metin üzerinden birlikte araştırma yapmasını s... example.com Gemini gemini-briefing Teknoloji Guncellemesi Diplomasi Gemini, ekiplerin video, görsel ve metin üzerinden birlikte araştırma yapmasını sağlayan ortak oturum modunu duyurdu." data-organization="Gemini" data-theme="Teknoloji Guncellemesi" data-document="gemini-briefing" data-document-label="Gemini Briefing" data-source="example.com" data-keywords="Diplomasi" data-importance="46" data-index="8" data-expanded="false">
+  <div class="card-top">
+    <div class="card-index">09</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-9')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Teknoloji Guncellemesi</div>
+  <div class="card-body">Gemini, ekiplerin video, görsel ve metin üzerinden birlikte araştırma yapmasını sağlayan ortak oturum modunu duyurdu.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Diplomasi</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 46/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>Gemini, ekiplerin video, görsel ve metin üzerinden birlikte araştırma yapmasını sağlayan ortak oturum modunu duyurdu.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">Gemini, ekiplerin video, görsel ve metin üzerinden birlikte araştırma yapmasını sağlayan ortak oturum modunu duyurdu.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Platform ve urun yol haritasi etkisi belirgin. Haber Gemini ekseninde teknoloji guncellemesi basligina oturuyor; izleme etiketleri: Diplomasi.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Gemini Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/gemini-collab-2" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'Gemini')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: Gemini | Dokuman: Gemini Briefing</span>
+  </footer>
+</article>
+<article id="news-10" class="news-card" data-search="Gemini, kurumsal arama sonuçlarında kaynak puanlaması ve öne çıkan risk notları gösteren yeni görünümü paylaştı. Gemini, kurumsal arama sonuçlarında kaynak puanlaması ve öne çıkan risk notları g... example.com Gemini gemini-briefing Kurumsal Donusum Kurumsal Etki Gemini, kurumsal arama sonuçlarında kaynak puanlaması ve öne çıkan risk notları gösteren yeni görünümü paylaştı." data-organization="Gemini" data-theme="Kurumsal Donusum" data-document="gemini-briefing" data-document-label="Gemini Briefing" data-source="example.com" data-keywords="Kurumsal Etki" data-importance="46" data-index="9" data-expanded="false">
+  <div class="card-top">
+    <div class="card-index">10</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-10')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Kurumsal Donusum</div>
+  <div class="card-body">Gemini, kurumsal arama sonuçlarında kaynak puanlaması ve öne çıkan risk notları gösteren yeni görünümü paylaştı.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Kurumsal Etki</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 46/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>Gemini, kurumsal arama sonuçlarında kaynak puanlaması ve öne çıkan risk notları gösteren yeni görünümü paylaştı.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">Gemini, kurumsal arama sonuçlarında kaynak puanlaması ve öne çıkan risk notları gösteren yeni görünümü paylaştı.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Platform ve urun yol haritasi etkisi belirgin. Haber Gemini ekseninde kurumsal donusum basligina oturuyor; izleme etiketleri: Kurumsal Etki.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Gemini Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/gemini-search-3" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'Gemini')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: Gemini | Dokuman: Gemini Briefing</span>
+  </footer>
+</article>
+<article id="news-11" class="news-card" data-search="Gemini, satış ekipleri için toplantı notları ile CRM özetlerini otomatik ilişkilendiren yeni eklentileri tanıttı. Gemini, satış ekipleri için toplantı notları ile CRM özetlerini otomatik ilişkile... example.com Gemini gemini-briefing Teknoloji Guncellemesi Genel Gundem Gemini, satış ekipleri için toplantı notları ile CRM özetlerini otomatik ilişkilendiren yeni eklentileri tanıttı." data-organization="Gemini" data-theme="Teknoloji Guncellemesi" data-document="gemini-briefing" data-document-label="Gemini Briefing" data-source="example.com" data-keywords="Genel Gundem" data-importance="46" data-index="10" data-expanded="false">
+  <div class="card-top">
+    <div class="card-index">11</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-11')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Teknoloji Guncellemesi</div>
+  <div class="card-body">Gemini, satış ekipleri için toplantı notları ile CRM özetlerini otomatik ilişkilendiren yeni eklentileri tanıttı.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Genel Gundem</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 46/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>Gemini, satış ekipleri için toplantı notları ile CRM özetlerini otomatik ilişkilendiren yeni eklentileri tanıttı.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">Gemini, satış ekipleri için toplantı notları ile CRM özetlerini otomatik ilişkilendiren yeni eklentileri tanıttı.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Platform ve urun yol haritasi etkisi belirgin. Haber Gemini ekseninde teknoloji guncellemesi basligina oturuyor; izleme etiketleri: Genel Gundem.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Gemini Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/gemini-sales-4" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'Gemini')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: Gemini | Dokuman: Gemini Briefing</span>
+  </footer>
+</article>
+<article id="news-12" class="news-card" data-search="Gemini, ofis belgeleri üzerinde çok adımlı analiz yapabilen ajan benzeri öneri akışını genişletti. Gemini, ofis belgeleri üzerinde çok adımlı analiz yapabilen ajan benzeri öneri ak... example.com Gemini gemini-briefing Kurumsal Donusum Yapay Zeka Gemini, ofis belgeleri üzerinde çok adımlı analiz yapabilen ajan benzeri öneri akışını genişletti." data-organization="Gemini" data-theme="Kurumsal Donusum" data-document="gemini-briefing" data-document-label="Gemini Briefing" data-source="example.com" data-keywords="Yapay Zeka" data-importance="54" data-index="11" data-expanded="false">
+  <div class="card-top">
+    <div class="card-index">12</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-12')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Kurumsal Donusum</div>
+  <div class="card-body">Gemini, ofis belgeleri üzerinde çok adımlı analiz yapabilen ajan benzeri öneri akışını genişletti.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Yapay Zeka</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 54/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>40</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 40%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>40</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 40%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>40</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 40%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>Gemini, ofis belgeleri üzerinde çok adımlı analiz yapabilen ajan benzeri öneri akışını genişletti.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">Gemini, ofis belgeleri üzerinde çok adımlı analiz yapabilen ajan benzeri öneri akışını genişletti.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Platform ve urun yol haritasi etkisi belirgin. Haber Gemini ekseninde kurumsal donusum basligina oturuyor; izleme etiketleri: Yapay Zeka.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Gemini Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/gemini-docs-5" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'Gemini')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: Gemini | Dokuman: Gemini Briefing</span>
+  </footer>
+</article>
+<article id="news-13" class="news-card" data-search="Gemini, görsel içerikten tablo çıkarımı ve yönetici özeti üretimini aynı yan panelde topladı. Gemini, görsel içerikten tablo çıkarımı ve yönetici özeti üretimini aynı yan pane... example.com Gemini gemini-briefing Teknoloji Guncellemesi Genel Gundem Gemini, görsel içerikten tablo çıkarımı ve yönetici özeti üretimini aynı yan panelde topladı." data-organization="Gemini" data-theme="Teknoloji Guncellemesi" data-document="gemini-briefing" data-document-label="Gemini Briefing" data-source="example.com" data-keywords="Genel Gundem" data-importance="46" data-index="12" data-expanded="false">
+  <div class="card-top">
+    <div class="card-index">13</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-13')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Teknoloji Guncellemesi</div>
+  <div class="card-body">Gemini, görsel içerikten tablo çıkarımı ve yönetici özeti üretimini aynı yan panelde topladı.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Genel Gundem</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 46/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>Gemini, görsel içerikten tablo çıkarımı ve yönetici özeti üretimini aynı yan panelde topladı.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">Gemini, görsel içerikten tablo çıkarımı ve yönetici özeti üretimini aynı yan panelde topladı.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Platform ve urun yol haritasi etkisi belirgin. Haber Gemini ekseninde teknoloji guncellemesi basligina oturuyor; izleme etiketleri: Genel Gundem.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Gemini Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/gemini-vision-6" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'Gemini')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: Gemini | Dokuman: Gemini Briefing</span>
+  </footer>
+</article>
+<article id="news-14" class="news-card" data-search="Gemini, kurumsal bilgi tabanı sorgularında departman bazlı erişim ve bağlamsal filtreleme desteği ekledi. Gemini, kurumsal bilgi tabanı sorgularında departman bazlı erişim ve bağlamsal fi... example.com Gemini gemini-briefing Kurumsal Donusum Kurumsal Etki Gemini, kurumsal bilgi tabanı sorgularında departman bazlı erişim ve bağlamsal filtreleme desteği ekledi." data-organization="Gemini" data-theme="Kurumsal Donusum" data-document="gemini-briefing" data-document-label="Gemini Briefing" data-source="example.com" data-keywords="Kurumsal Etki" data-importance="46" data-index="13" data-expanded="false">
+  <div class="card-top">
+    <div class="card-index">14</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-14')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Kurumsal Donusum</div>
+  <div class="card-body">Gemini, kurumsal bilgi tabanı sorgularında departman bazlı erişim ve bağlamsal filtreleme desteği ekledi.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Kurumsal Etki</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 46/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>Gemini, kurumsal bilgi tabanı sorgularında departman bazlı erişim ve bağlamsal filtreleme desteği ekledi.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">Gemini, kurumsal bilgi tabanı sorgularında departman bazlı erişim ve bağlamsal filtreleme desteği ekledi.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Platform ve urun yol haritasi etkisi belirgin. Haber Gemini ekseninde kurumsal donusum basligina oturuyor; izleme etiketleri: Kurumsal Etki.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Gemini Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/gemini-enterprise-7" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'Gemini')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: Gemini | Dokuman: Gemini Briefing</span>
+  </footer>
+</article>
+<article id="news-15" class="news-card" data-search="NVIDIA, veri merkezi ölçeğinde yapay zeka çıkarımı için yeni hızlandırıcı mimarisi ve yazılım optimizasyonlarını paylaştı. NVIDIA, veri merkezi ölçeğinde yapay zeka çıkarımı için yeni hızlandırıcı mimaris... example.com NVIDIA nvidia-briefing Teknoloji Guncellemesi Yapay Zeka NVIDIA, veri merkezi ölçeğinde yapay zeka çıkarımı için yeni hızlandırıcı mimarisi ve yazılım optimizasyonlarını paylaştı." data-organization="NVIDIA" data-theme="Teknoloji Guncellemesi" data-document="nvidia-briefing" data-document-label="Nvidia Briefing" data-source="example.com" data-keywords="Yapay Zeka" data-importance="54" data-index="14" data-expanded="false">
+  <div class="card-top">
+    <div class="card-index">15</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-15')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Teknoloji Guncellemesi</div>
+  <div class="card-body">NVIDIA, veri merkezi ölçeğinde yapay zeka çıkarımı için yeni hızlandırıcı mimarisi ve yazılım optimizasyonlarını paylaştı.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Yapay Zeka</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 54/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>40</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 40%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>40</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 40%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>40</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 40%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>NVIDIA, veri merkezi ölçeğinde yapay zeka çıkarımı için yeni hızlandırıcı mimarisi ve yazılım optimizasyonlarını paylaştı.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">NVIDIA, veri merkezi ölçeğinde yapay zeka çıkarımı için yeni hızlandırıcı mimarisi ve yazılım optimizasyonlarını paylaştı.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Tedarik ve operasyon etkisi one cikiyor. Haber NVIDIA ekseninde teknoloji guncellemesi basligina oturuyor; izleme etiketleri: Yapay Zeka.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Nvidia Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/nvidia-inference-1" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'NVIDIA')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: NVIDIA | Dokuman: Nvidia Briefing</span>
+  </footer>
+</article>
+<article id="news-16" class="news-card" data-search="NVIDIA, kurum içi model servisleri için GPU kullanımını dengeleyen yeni orkestrasyon katmanını duyurdu. NVIDIA, kurum içi model servisleri için GPU kullanımını dengeleyen yeni orkestras... example.com NVIDIA nvidia-briefing Kurumsal Donusum Yapay Zeka NVIDIA, kurum içi model servisleri için GPU kullanımını dengeleyen yeni orkestrasyon katmanını duyurdu." data-organization="NVIDIA" data-theme="Kurumsal Donusum" data-document="nvidia-briefing" data-document-label="Nvidia Briefing" data-source="example.com" data-keywords="Yapay Zeka" data-importance="46" data-index="15" data-expanded="false">
+  <div class="card-top">
+    <div class="card-index">16</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-16')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Kurumsal Donusum</div>
+  <div class="card-body">NVIDIA, kurum içi model servisleri için GPU kullanımını dengeleyen yeni orkestrasyon katmanını duyurdu.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Yapay Zeka</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 46/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>57</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 57%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>NVIDIA, kurum içi model servisleri için GPU kullanımını dengeleyen yeni orkestrasyon katmanını duyurdu.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">NVIDIA, kurum içi model servisleri için GPU kullanımını dengeleyen yeni orkestrasyon katmanını duyurdu.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Tedarik ve operasyon etkisi one cikiyor. Haber NVIDIA ekseninde kurumsal donusum basligina oturuyor; izleme etiketleri: Yapay Zeka.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Nvidia Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/nvidia-orchestration-2" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'NVIDIA')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: NVIDIA | Dokuman: Nvidia Briefing</span>
+  </footer>
+</article>
+<article id="news-17" class="news-card" data-search="NVIDIA, çoklu raf dağıtımlarında enerji verimliliğini yükselten yeni soğutma ve telemetri yaklaşımını tanıttı. NVIDIA, çoklu raf dağıtımlarında enerji verimliliğini yükselten yeni soğutma ve t... example.com NVIDIA nvidia-briefing Teknoloji Guncellemesi Genel Gundem NVIDIA, çoklu raf dağıtımlarında enerji verimliliğini yükselten yeni soğutma ve telemetri yaklaşımını tanıttı." data-organization="NVIDIA" data-theme="Teknoloji Guncellemesi" data-document="nvidia-briefing" data-document-label="Nvidia Briefing" data-source="example.com" data-keywords="Genel Gundem" data-importance="46" data-index="16" data-expanded="false">
+  <div class="card-top">
+    <div class="card-index">17</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-17')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Teknoloji Guncellemesi</div>
+  <div class="card-body">NVIDIA, çoklu raf dağıtımlarında enerji verimliliğini yükselten yeni soğutma ve telemetri yaklaşımını tanıttı.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Genel Gundem</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 46/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>NVIDIA, çoklu raf dağıtımlarında enerji verimliliğini yükselten yeni soğutma ve telemetri yaklaşımını tanıttı.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">NVIDIA, çoklu raf dağıtımlarında enerji verimliliğini yükselten yeni soğutma ve telemetri yaklaşımını tanıttı.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Tedarik ve operasyon etkisi one cikiyor. Haber NVIDIA ekseninde teknoloji guncellemesi basligina oturuyor; izleme etiketleri: Genel Gundem.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Nvidia Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/nvidia-datacenter-3" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'NVIDIA')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: NVIDIA | Dokuman: Nvidia Briefing</span>
+  </footer>
+</article>
+<article id="news-18" class="news-card" data-search="NVIDIA, güvenlik ekiplerine yönelik AI iş yükü anomali tespiti için yeni gözlemleme panelleri gösterdi. NVIDIA, güvenlik ekiplerine yönelik AI iş yükü anomali tespiti için yeni gözlemle... example.com NVIDIA nvidia-briefing Teknoloji Guncellemesi Yapay Zeka NVIDIA, güvenlik ekiplerine yönelik AI iş yükü anomali tespiti için yeni gözlemleme panelleri gösterdi." data-organization="NVIDIA" data-theme="Teknoloji Guncellemesi" data-document="nvidia-briefing" data-document-label="Nvidia Briefing" data-source="example.com" data-keywords="Yapay Zeka" data-importance="46" data-index="17" data-expanded="false">
+  <div class="card-top">
+    <div class="card-index">18</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-18')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Teknoloji Guncellemesi</div>
+  <div class="card-body">NVIDIA, güvenlik ekiplerine yönelik AI iş yükü anomali tespiti için yeni gözlemleme panelleri gösterdi.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Yapay Zeka</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 46/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>NVIDIA, güvenlik ekiplerine yönelik AI iş yükü anomali tespiti için yeni gözlemleme panelleri gösterdi.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">NVIDIA, güvenlik ekiplerine yönelik AI iş yükü anomali tespiti için yeni gözlemleme panelleri gösterdi.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Tedarik ve operasyon etkisi one cikiyor. Haber NVIDIA ekseninde teknoloji guncellemesi basligina oturuyor; izleme etiketleri: Yapay Zeka.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Nvidia Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/nvidia-security-4" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'NVIDIA')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: NVIDIA | Dokuman: Nvidia Briefing</span>
+  </footer>
+</article>
+<article id="news-19" class="news-card" data-search="NVIDIA, büyük ölçekli eğitim ve çıkarım kümelerinde ağ darboğazını azaltan yeni yazılım ayarlarını açıkladı. NVIDIA, büyük ölçekli eğitim ve çıkarım kümelerinde ağ darboğazını azaltan yeni y... example.com NVIDIA nvidia-briefing Teknoloji Guncellemesi Genel Gundem NVIDIA, büyük ölçekli eğitim ve çıkarım kümelerinde ağ darboğazını azaltan yeni yazılım ayarlarını açıkladı." data-organization="NVIDIA" data-theme="Teknoloji Guncellemesi" data-document="nvidia-briefing" data-document-label="Nvidia Briefing" data-source="example.com" data-keywords="Genel Gundem" data-importance="46" data-index="18" data-expanded="false">
+  <div class="card-top">
+    <div class="card-index">19</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-19')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Teknoloji Guncellemesi</div>
+  <div class="card-body">NVIDIA, büyük ölçekli eğitim ve çıkarım kümelerinde ağ darboğazını azaltan yeni yazılım ayarlarını açıkladı.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Genel Gundem</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 46/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>NVIDIA, büyük ölçekli eğitim ve çıkarım kümelerinde ağ darboğazını azaltan yeni yazılım ayarlarını açıkladı.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">NVIDIA, büyük ölçekli eğitim ve çıkarım kümelerinde ağ darboğazını azaltan yeni yazılım ayarlarını açıkladı.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Tedarik ve operasyon etkisi one cikiyor. Haber NVIDIA ekseninde teknoloji guncellemesi basligina oturuyor; izleme etiketleri: Genel Gundem.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Nvidia Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/nvidia-network-5" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'NVIDIA')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: NVIDIA | Dokuman: Nvidia Briefing</span>
+  </footer>
+</article>
+<article id="news-20" class="news-card" data-search="NVIDIA, video üretim ve analiz iş akışlarında gerçek zamanlı hızlandırma sunan yeni SDK güncellemelerini paylaştı. NVIDIA, video üretim ve analiz iş akışlarında gerçek zamanlı hızlandırma sunan ye... example.com NVIDIA nvidia-briefing Teknoloji Guncellemesi Genel Gundem NVIDIA, video üretim ve analiz iş akışlarında gerçek zamanlı hızlandırma sunan yeni SDK güncellemelerini paylaştı." data-organization="NVIDIA" data-theme="Teknoloji Guncellemesi" data-document="nvidia-briefing" data-document-label="Nvidia Briefing" data-source="example.com" data-keywords="Genel Gundem" data-importance="46" data-index="19" data-expanded="false">
+  <div class="card-top">
+    <div class="card-index">20</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-20')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Teknoloji Guncellemesi</div>
+  <div class="card-body">NVIDIA, video üretim ve analiz iş akışlarında gerçek zamanlı hızlandırma sunan yeni SDK güncellemelerini paylaştı.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Genel Gundem</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 46/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>NVIDIA, video üretim ve analiz iş akışlarında gerçek zamanlı hızlandırma sunan yeni SDK güncellemelerini paylaştı.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">NVIDIA, video üretim ve analiz iş akışlarında gerçek zamanlı hızlandırma sunan yeni SDK güncellemelerini paylaştı.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Tedarik ve operasyon etkisi one cikiyor. Haber NVIDIA ekseninde teknoloji guncellemesi basligina oturuyor; izleme etiketleri: Genel Gundem.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Nvidia Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/nvidia-sdk-6" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'NVIDIA')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: NVIDIA | Dokuman: Nvidia Briefing</span>
+  </footer>
+</article>
+<article id="news-21" class="news-card" data-search="NVIDIA, kurumsal yapay zeka platformları için referans mimari ve operasyonel izleme rehberini yayınladı. NVIDIA, kurumsal yapay zeka platformları için referans mimari ve operasyonel izle... example.com NVIDIA nvidia-briefing Kurumsal Donusum Yapay Zeka, Kurumsal Etki NVIDIA, kurumsal yapay zeka platformları için referans mimari ve operasyonel izleme rehberini yayınladı." data-organization="NVIDIA" data-theme="Kurumsal Donusum" data-document="nvidia-briefing" data-document-label="Nvidia Briefing" data-source="example.com" data-keywords="Yapay Zeka, Kurumsal Etki" data-importance="64" data-index="20" data-expanded="false">
+  <div class="card-top">
+    <div class="card-index">21</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-21')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Kurumsal Donusum</div>
+  <div class="card-body">NVIDIA, kurumsal yapay zeka platformları için referans mimari ve operasyonel izleme rehberini yayınladı.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Yapay Zeka</li><li>Kurumsal Etki</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 64/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>42</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 42%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>42</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 42%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>60</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 60%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>NVIDIA, kurumsal yapay zeka platformları için referans mimari ve operasyonel izleme rehberini yayınladı.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">NVIDIA, kurumsal yapay zeka platformları için referans mimari ve operasyonel izleme rehberini yayınladı.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Tedarik ve operasyon etkisi one cikiyor. Haber NVIDIA ekseninde kurumsal donusum basligina oturuyor; izleme etiketleri: Yapay Zeka, Kurumsal Etki.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Nvidia Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/nvidia-platform-7" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'NVIDIA')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: NVIDIA | Dokuman: Nvidia Briefing</span>
+  </footer>
+</article>
+<article id="news-22" class="news-card" data-search="OpenAI, kurumsal ekipler için yeni ajan orkestrasyon panelini duyurdu ve model yönetişimi raporlarını genişletti. OpenAI, kurumsal ekipler için yeni ajan orkestrasyon panelini duyurdu ve model yö... example.com OpenAI openai-briefing Kurumsal Donusum Yapay Zeka, Kurumsal Etki OpenAI, kurumsal ekipler için yeni ajan orkestrasyon panelini duyurdu ve model yönetişimi raporlarını genişletti." data-organization="OpenAI" data-theme="Kurumsal Donusum" data-document="openai-briefing" data-document-label="Openai Briefing" data-source="example.com" data-keywords="Yapay Zeka, Kurumsal Etki" data-importance="64" data-index="21" data-expanded="false">
+  <div class="card-top">
+    <div class="card-index">22</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-22')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Kurumsal Donusum</div>
+  <div class="card-body">OpenAI, kurumsal ekipler için yeni ajan orkestrasyon panelini duyurdu ve model yönetişimi raporlarını genişletti.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Yapay Zeka</li><li>Kurumsal Etki</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 64/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>42</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 42%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>42</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 42%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>42</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 42%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>OpenAI, kurumsal ekipler için yeni ajan orkestrasyon panelini duyurdu ve model yönetişimi raporlarını genişletti.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">OpenAI, kurumsal ekipler için yeni ajan orkestrasyon panelini duyurdu ve model yönetişimi raporlarını genişletti.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Platform ve urun yol haritasi etkisi belirgin. Haber OpenAI ekseninde kurumsal donusum basligina oturuyor; izleme etiketleri: Yapay Zeka, Kurumsal Etki.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Openai Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/openai-agents-1" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'OpenAI')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: OpenAI | Dokuman: Openai Briefing</span>
+  </footer>
+</article>
+<article id="news-23" class="news-card" data-search="OpenAI, finans ekiplerine yönelik denetlenebilir özetleme akışlarını yeni API politika katmanıyla sundu. OpenAI, finans ekiplerine yönelik denetlenebilir özetleme akışlarını yeni API pol... example.com OpenAI openai-briefing Teknoloji Guncellemesi Yapay Zeka OpenAI, finans ekiplerine yönelik denetlenebilir özetleme akışlarını yeni API politika katmanıyla sundu." data-organization="OpenAI" data-theme="Teknoloji Guncellemesi" data-document="openai-briefing" data-document-label="Openai Briefing" data-source="example.com" data-keywords="Yapay Zeka" data-importance="46" data-index="22" data-expanded="false">
+  <div class="card-top">
+    <div class="card-index">23</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-23')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Teknoloji Guncellemesi</div>
+  <div class="card-body">OpenAI, finans ekiplerine yönelik denetlenebilir özetleme akışlarını yeni API politika katmanıyla sundu.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Yapay Zeka</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 46/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>OpenAI, finans ekiplerine yönelik denetlenebilir özetleme akışlarını yeni API politika katmanıyla sundu.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">OpenAI, finans ekiplerine yönelik denetlenebilir özetleme akışlarını yeni API politika katmanıyla sundu.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Platform ve urun yol haritasi etkisi belirgin. Haber OpenAI ekseninde teknoloji guncellemesi basligina oturuyor; izleme etiketleri: Yapay Zeka.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Openai Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/openai-finance-2" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'OpenAI')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: OpenAI | Dokuman: Openai Briefing</span>
+  </footer>
+</article>
+<article id="news-24" class="news-card" data-search="OpenAI, geliştirici ekipleri için çok adımlı görev otomasyonu ve değerlendirme araçlarını bir araya getirdi. OpenAI, geliştirici ekipleri için çok adımlı görev otomasyonu ve değerlendirme ar... example.com OpenAI openai-briefing Otomasyon ve Robotik Yapay Zeka, Robotik OpenAI, geliştirici ekipleri için çok adımlı görev otomasyonu ve değerlendirme araçlarını bir araya getirdi." data-organization="OpenAI" data-theme="Otomasyon ve Robotik" data-document="openai-briefing" data-document-label="Openai Briefing" data-source="example.com" data-keywords="Yapay Zeka, Robotik" data-importance="64" data-index="23" data-expanded="false">
+  <div class="card-top">
+    <div class="card-index">24</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-24')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Otomasyon ve Robotik</div>
+  <div class="card-body">OpenAI, geliştirici ekipleri için çok adımlı görev otomasyonu ve değerlendirme araçlarını bir araya getirdi.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Yapay Zeka</li><li>Robotik</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 64/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>60</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 60%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>42</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 42%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>42</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 42%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>OpenAI, geliştirici ekipleri için çok adımlı görev otomasyonu ve değerlendirme araçlarını bir araya getirdi.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">OpenAI, geliştirici ekipleri için çok adımlı görev otomasyonu ve değerlendirme araçlarını bir araya getirdi.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Platform ve urun yol haritasi etkisi belirgin. Haber OpenAI ekseninde otomasyon ve robotik basligina oturuyor; izleme etiketleri: Yapay Zeka, Robotik.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Openai Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/openai-devtools-3" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'OpenAI')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: OpenAI | Dokuman: Openai Briefing</span>
+  </footer>
+</article>
+<article id="news-25" class="news-card" data-search="OpenAI, müşteri destek senaryolarında ajanların kalite kontrolünü hızlandıran yeni gözlemleme ekranını tanıttı. OpenAI, müşteri destek senaryolarında ajanların kalite kontrolünü hızlandıran yen... example.com OpenAI openai-briefing Kurumsal Donusum Yapay Zeka OpenAI, müşteri destek senaryolarında ajanların kalite kontrolünü hızlandıran yeni gözlemleme ekranını tanıttı." data-organization="OpenAI" data-theme="Kurumsal Donusum" data-document="openai-briefing" data-document-label="Openai Briefing" data-source="example.com" data-keywords="Yapay Zeka" data-importance="54" data-index="24" data-expanded="false">
+  <div class="card-top">
+    <div class="card-index">25</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-25')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Kurumsal Donusum</div>
+  <div class="card-body">OpenAI, müşteri destek senaryolarında ajanların kalite kontrolünü hızlandıran yeni gözlemleme ekranını tanıttı.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Yapay Zeka</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 54/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>40</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 40%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>40</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 40%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>40</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 40%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>OpenAI, müşteri destek senaryolarında ajanların kalite kontrolünü hızlandıran yeni gözlemleme ekranını tanıttı.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">OpenAI, müşteri destek senaryolarında ajanların kalite kontrolünü hızlandıran yeni gözlemleme ekranını tanıttı.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Platform ve urun yol haritasi etkisi belirgin. Haber OpenAI ekseninde kurumsal donusum basligina oturuyor; izleme etiketleri: Yapay Zeka.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Openai Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/openai-support-4" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'OpenAI')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: OpenAI | Dokuman: Openai Briefing</span>
+  </footer>
+</article>
+<article id="news-26" class="news-card" data-search="OpenAI, şirket içi arama ve bilgi tabanı kullanımını birleştiren yeni çalışma alanı tasarımını paylaştı. OpenAI, şirket içi arama ve bilgi tabanı kullanımını birleştiren yeni çalışma ala... example.com OpenAI openai-briefing Teknoloji Guncellemesi Yapay Zeka OpenAI, şirket içi arama ve bilgi tabanı kullanımını birleştiren yeni çalışma alanı tasarımını paylaştı." data-organization="OpenAI" data-theme="Teknoloji Guncellemesi" data-document="openai-briefing" data-document-label="Openai Briefing" data-source="example.com" data-keywords="Yapay Zeka" data-importance="46" data-index="25" data-expanded="false">
+  <div class="card-top">
+    <div class="card-index">26</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-26')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Teknoloji Guncellemesi</div>
+  <div class="card-body">OpenAI, şirket içi arama ve bilgi tabanı kullanımını birleştiren yeni çalışma alanı tasarımını paylaştı.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Yapay Zeka</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 46/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>OpenAI, şirket içi arama ve bilgi tabanı kullanımını birleştiren yeni çalışma alanı tasarımını paylaştı.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">OpenAI, şirket içi arama ve bilgi tabanı kullanımını birleştiren yeni çalışma alanı tasarımını paylaştı.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Platform ve urun yol haritasi etkisi belirgin. Haber OpenAI ekseninde teknoloji guncellemesi basligina oturuyor; izleme etiketleri: Yapay Zeka.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Openai Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/openai-search-5" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'OpenAI')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: OpenAI | Dokuman: Openai Briefing</span>
+  </footer>
+</article>
+<article id="news-27" class="news-card" data-search="OpenAI, güvenlik ekipleri için kırmızı takım bulgularını politika yapılandırmalarıyla eşleyen yeni rapor modülünü duyurdu. OpenAI, güvenlik ekipleri için kırmızı takım bulgularını politika yapılandırmalar... example.com OpenAI openai-briefing Teknoloji Guncellemesi Yapay Zeka OpenAI, güvenlik ekipleri için kırmızı takım bulgularını politika yapılandırmalarıyla eşleyen yeni rapor modülünü duyurdu." data-organization="OpenAI" data-theme="Teknoloji Guncellemesi" data-document="openai-briefing" data-document-label="Openai Briefing" data-source="example.com" data-keywords="Yapay Zeka" data-importance="46" data-index="26" data-expanded="false">
+  <div class="card-top">
+    <div class="card-index">27</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-27')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Teknoloji Guncellemesi</div>
+  <div class="card-body">OpenAI, güvenlik ekipleri için kırmızı takım bulgularını politika yapılandırmalarıyla eşleyen yeni rapor modülünü duyurdu.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Yapay Zeka</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 46/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>39</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 39%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>OpenAI, güvenlik ekipleri için kırmızı takım bulgularını politika yapılandırmalarıyla eşleyen yeni rapor modülünü duyurdu.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">OpenAI, güvenlik ekipleri için kırmızı takım bulgularını politika yapılandırmalarıyla eşleyen yeni rapor modülünü duyurdu.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Platform ve urun yol haritasi etkisi belirgin. Haber OpenAI ekseninde teknoloji guncellemesi basligina oturuyor; izleme etiketleri: Yapay Zeka.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Openai Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/openai-security-6" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'OpenAI')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: OpenAI | Dokuman: Openai Briefing</span>
+  </footer>
+</article>
+<article id="news-28" class="news-card" data-search="OpenAI, çok dilli kurumsal dağıtımlar için yönetim konsoluna bölgesel denetim ve kullanım analitiği ekledi. OpenAI, çok dilli kurumsal dağıtımlar için yönetim konsoluna bölgesel denetim ve... example.com OpenAI openai-briefing Kurumsal Donusum Yapay Zeka, Kurumsal Etki OpenAI, çok dilli kurumsal dağıtımlar için yönetim konsoluna bölgesel denetim ve kullanım analitiği ekledi." data-organization="OpenAI" data-theme="Kurumsal Donusum" data-document="openai-briefing" data-document-label="Openai Briefing" data-source="example.com" data-keywords="Yapay Zeka, Kurumsal Etki" data-importance="56" data-index="27" data-expanded="false">
+  <div class="card-top">
+    <div class="card-index">28</div>
+    <div class="card-top-right">
+      <div class="source-host">example.com</div>
+      <button class="secondary-button" type="button" data-expand-toggle onclick="toggleCardExpansion('news-28')">Detayi Genislet</button>
+    </div>
+  </div>
+  <div class="theme-badge">Kurumsal Donusum</div>
+  <div class="card-body">OpenAI, çok dilli kurumsal dağıtımlar için yönetim konsoluna bölgesel denetim ve kullanım analitiği ekledi.</div>
+  <div class="card-expandable">
+  <div class="insight-grid">
+    <section class="insight-panel">
+      <p class="panel-title">Anahtar Etiketler</p>
+      <ul class="insight-tags"><li>Yapay Zeka</li><li>Kurumsal Etki</li></ul>
+    </section>
+    <section class="insight-panel">
+      <div class="infographic">
+        <div class="score-chip">Onem Skoru 56/100</div>
+        <div class="metric">
+  <div class="metric-head">
+    <span>Operasyon</span>
+    <span>41</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 41%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Strateji</span>
+    <span>41</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 41%"></div>
+  </div>
+</div><div class="metric">
+  <div class="metric-head">
+    <span>Erisim</span>
+    <span>41</span>
+  </div>
+  <div class="metric-track">
+    <div class="metric-fill" style="width: 41%"></div>
+  </div>
+</div>
+      </div>
+    </section>
+  </div>
+  <section class="insight-panel">
+    <p class="panel-title">One Cikanlar</p>
+    <ul class="summary-list"><li>OpenAI, çok dilli kurumsal dağıtımlar için yönetim konsoluna bölgesel denetim ve kullanım analitiği ekledi.</li></ul>
+  </section>
+  <section class="insight-panel">
+    <p class="panel-title">Habere Iliskin Kisa Degerlendirme</p>
+    <div class="detail-sections"><article class="detail-card"><h3 class="detail-title">Durum</h3><p class="detail-copy">OpenAI, çok dilli kurumsal dağıtımlar için yönetim konsoluna bölgesel denetim ve kullanım analitiği ekledi.</p></article><article class="detail-card"><h3 class="detail-title">Yonetici Acisi</h3><p class="detail-copy">Platform ve urun yol haritasi etkisi belirgin. Haber OpenAI ekseninde kurumsal donusum basligina oturuyor; izleme etiketleri: Yapay Zeka, Kurumsal Etki.</p></article><article class="detail-card"><h3 class="detail-title">Takip Basligi</h3><p class="detail-copy">Bu kayit Openai Briefing icinden geldi. Devam haberlerinde ayni kurum, tema ve kaynak akisinin surup surmedigi izlenmeli.</p></article></div>
+  </section>
+  </div>
+  <footer class="card-footer">
+    <div class="card-actions">
+      <a class="source-link" href="https://example.com/openai-global-7" target="_blank" rel="noopener noreferrer">Kaynağı Aç</a>
+      <button class="secondary-button" type="button" onclick="setFilterValue('institution-filter', 'OpenAI')">Kurumu Filtrele</button>
+    </div>
+    <span class="meta-note">Kurum: OpenAI | Dokuman: Openai Briefing</span>
+  </footer>
+</article>
+        </section>
+      </div>
+    </section>
+  </main>
+  <script>
+    function applyFilters() {
+      const query = document.getElementById("news-search").value.toLowerCase().trim();
+      const organization = document.getElementById("institution-filter").value.toLowerCase().trim();
+      const theme = document.getElementById("theme-filter").value.toLowerCase().trim();
+      const documentName = document.getElementById("document-filter").value.toLowerCase().trim();
+      const source = document.getElementById("source-filter").value.toLowerCase().trim();
+      const keyword = document.getElementById("keyword-filter").value.toLowerCase().trim();
+      const cards = Array.from(document.querySelectorAll(".news-card"));
+      let visibleCount = 0;
+      const execMode = document.body.classList.contains("exec-compact");
+      const executiveLimit = 5;
+
+      for (const card of cards) {
+        const haystack = (card.dataset.search || "").toLowerCase();
+        const cardOrganization = (card.dataset.organization || "").toLowerCase();
+        const cardTheme = (card.dataset.theme || "").toLowerCase();
+        const cardDocument = (card.dataset.document || "").toLowerCase();
+        const cardSource = (card.dataset.source || "").toLowerCase();
+        const keywordHaystack = (card.dataset.keywords || "").toLowerCase();
+        const matchesSearch = query === "" || haystack.includes(query);
+        const matchesOrganization = organization === "" || cardOrganization === organization;
+        const matchesTheme = theme === "" || cardTheme === theme;
+        const matchesDocument = documentName === "" || cardDocument === documentName;
+        const matchesSource = source === "" || cardSource === source;
+        const matchesKeyword = keyword === "" || keywordHaystack.includes(keyword) || haystack.includes(keyword);
+        const visible = matchesSearch && matchesOrganization && matchesTheme && matchesDocument && matchesSource && matchesKeyword;
+        card.hidden = !visible;
+        if (visible) {
+          visibleCount += 1;
+        }
+      }
+
+      if (execMode) {
+        let shown = 0;
+        for (const card of cards) {
+          if (card.hidden) {
+            continue;
+          }
+          shown += 1;
+          if (shown > executiveLimit) {
+            card.hidden = true;
+          }
+        }
+        visibleCount = Math.min(visibleCount, executiveLimit);
+      }
+
+      document.getElementById("results-count").textContent = "Gosterilen " + visibleCount + " / 28 haber";
+      syncActiveFilterChips();
+    }
+
+    function filterCards() {
+      applyFilters();
+    }
+
+    function sortCards() {
+      const grid = document.querySelector(".grid");
+      const cards = Array.from(grid.querySelectorAll(".news-card"));
+      const order = document.getElementById("sort-order").value;
+
+      cards.sort((left, right) => {
+        if (order === "importance-desc") {
+          return Number(right.dataset.importance || 0) - Number(left.dataset.importance || 0);
+        }
+        if (order === "organization-asc") {
+          return (left.dataset.organization || "").localeCompare(right.dataset.organization || "", "tr");
+        }
+        if (order === "theme-asc") {
+          return (left.dataset.theme || "").localeCompare(right.dataset.theme || "", "tr");
+        }
+        if (order === "document-asc") {
+          return (left.dataset.documentLabel || "").localeCompare(right.dataset.documentLabel || "", "tr");
+        }
+        return Number(left.dataset.index || 0) - Number(right.dataset.index || 0);
+      });
+
+      for (const card of cards) {
+        grid.appendChild(card);
+      }
+
+      applyFilters();
+    }
+
+    function syncActiveFilterChips() {
+      const chipHost = document.getElementById("active-filter-chips");
+      const definitions = [
+        ["Arama", "news-search"],
+        ["Kurum", "institution-filter"],
+        ["Tema", "theme-filter"],
+        ["Dokuman", "document-filter"],
+        ["Kaynak", "source-filter"],
+        ["Kelime", "keyword-filter"],
+      ];
+      const chips = [];
+
+      for (const [label, id] of definitions) {
+        const field = document.getElementById(id);
+        const value = (field.value || "").trim();
+        if (!value) {
+          continue;
+        }
+        chips.push('<span class="active-chip">' + label + ': ' + value + ' <button type="button" onclick="clearFilter(\'' + id + '\')">Temizle</button></span>');
+      }
+
+      chipHost.innerHTML = chips.join("");
+      chipHost.hidden = chips.length === 0;
+    }
+
+    function clearFilter(id) {
+      const field = document.getElementById(id);
+      field.value = "";
+      if (id === "sort-order") {
+        sortCards();
+        return;
+      }
+      applyFilters();
+    }
+
+    function setFilterValue(id, value) {
+      const field = document.getElementById(id);
+      field.value = value;
+      applyFilters();
+    }
+
+    function toggleCardExpansion(cardId) {
+      const card = document.getElementById(cardId);
+      const nextState = card.dataset.expanded !== "true";
+      card.dataset.expanded = nextState ? "true" : "false";
+      const toggle = card.querySelector("[data-expand-toggle]");
+      if (toggle) {
+        toggle.textContent = nextState ? "Detayi Daralt" : "Detayi Genislet";
+      }
+    }
+
+    function toggleExecutiveMode() {
+      const button = document.getElementById("exec-mode-toggle");
+      const enabled = !document.body.classList.contains("exec-compact");
+      document.body.classList.toggle("exec-compact", enabled);
+      button.dataset.active = enabled ? "true" : "false";
+      button.textContent = enabled ? "Tam Gorunume Don" : "Yonetici 5 Dakika";
+      applyFilters();
+    }
+
+    function resetFilters() {
+      document.getElementById("news-search").value = "";
+      document.getElementById("institution-filter").value = "";
+      document.getElementById("theme-filter").value = "";
+      document.getElementById("document-filter").value = "";
+      document.getElementById("source-filter").value = "";
+      document.getElementById("keyword-filter").value = "";
+      document.getElementById("sort-order").value = "importance-desc";
+      if (document.body.classList.contains("exec-compact")) {
+        document.body.classList.remove("exec-compact");
+        const button = document.getElementById("exec-mode-toggle");
+        button.dataset.active = "false";
+        button.textContent = "Yonetici 5 Dakika";
+      }
+      sortCards();
+      applyFilters();
+    }
+
+    sortCards();
+  </script>
+</body>
+</html>
