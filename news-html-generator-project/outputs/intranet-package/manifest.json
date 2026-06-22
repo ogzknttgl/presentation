@@ -1,0 +1,19 @@
+{
+  "site_title": "Intranet Haber Merkezi",
+  "entries": [
+    {
+      "title": "Haberdemo",
+      "source_file": "haberdemo.docx",
+      "output_file": "haberdemo.html",
+      "item_count": 3,
+      "parse_strategy": "recipient_link_blocks",
+      "warnings": [],
+      "themes": [
+        "Jeopolitik ve Guvenlik",
+        "Otomasyon ve Robotik",
+        "Servis Surekliligi"
+      ],
+      "average_importance": 79
+    }
+  ]
+}
