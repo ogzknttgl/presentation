@@ -331,3 +331,51 @@ LeakDB tarafındaki kazanım gerçek: **sensör kesintisi altında konumlandırm
 4. Boğazlar (K6) tek başına tez değil, A'nın vaka bölümü olarak en güçlü hâlinde.
 
 **Ön koşul (2 gün):** A'ya geçmeden önce zincirin veriyle gerçekten kapandığı gösterilmeli — aynı koridorda (i) en az 3 belgelenmiş kesinti olayı, (ii) olay öncesi/sonrası 30 günlük kesintisiz throughput serisi, (iii) olay günlerinde gözlenebilir GNSS/ADS-B bozulması. Üçü de yoksa konu A değil, B veya C'ye inilir.
+
+---
+
+## Ek B — İştirak gerektirmeyen açık veri hattı (A′ önerisi)
+
+**Teşhis:** Sorun konunun kendisi değil, çerçevesi. K1 askerî ikmal diliyle yazıldığı için savunma sanayii / SSB / kuvvet yapısı tarafına düşüyor; orada veri ve doğrulama kurum içine kapalı. Aynı yöntem, **nesnesi ticari deniz lojistiği** olan bir çerçevede tamamen açık veriyle yürür ve contested logistics alanından çıkmaz: kontestasyon (vuruş, karıştırma, kapatma) ticari akışa yönelir, karar da gemi işletmecisinin/planlamacının kararıdır.
+
+### A′ — Kontestasyon altında ticari deniz koridorlarında ölçüm kesintisi ve rota kararı
+
+**Soru:** AIS boşlukları ve GNSS karıştırması altında bir koridorun durumu kalibre edilmiş biçimde kestirilebilir mi; gözlenen rota/liman kararları bu belirsizlik altında modellenip karşı-olgusal (counterfactual) senaryolarda karar desteğine çevrilebilir mi?
+
+**Neden iştirak gerekmiyor — üç madde:**
+1. **Girdi tamamı tek kişiyle indirilebilir.** Kurum içi veri, mülakat, sınıflandırılmış doktrin yok. Her kaynak için "tek başına indirilebilirlik" testi uygulanır (aşağıdaki liste).
+2. **Doğrulama kamuya açık sonuçla yapılır.** Tahmin, gerçekleşmiş geçiş sayıları ve rota dağılımıyla karşılaştırılır — kimsenin onayı gerekmez.
+3. **Karar, öz-rapordan değil gözlenen davranıştan çıkarılır (revealed preference).** "Neden rotayı değiştirdiniz" diye sorulmaz; AIS'te rota değişimi görülür ve tersine modellenir. Bu, mülakat gerektirmediği gibi öz-rapor yanlılığını da ortadan kaldırır — yöntemsel olarak daha temiz.
+
+**Zincir (beş halka da açık):** olay ACLED/OSM/haber kaydı → tespit ADS-B (GNSS doğruluk raporları) + Sentinel-1 (liman/boğaz gözlemi) → ağ durumu PortWatch + AIS + UAB Boğazlar → karar gözlenen rota/liman seçimi → sonuç gerçekleşen transit süresi ve geçiş sayısı.
+
+**Doğrulama tasarımı (tutarlılık için):** Karadeniz–Boğazlar koridorunda kalibre et, **Kızıldeniz–Bab el-Mandeb'de dış doğrulama** yap. Aynı model, iki tiyatro, ayrı ayrı raporlanan kapsama ve pişmanlık. İkinci tiyatroda tutmuyorsa bu, "coğrafya değişince kalibrasyon taşınmıyor" bulgusudur.
+
+**Bileşenler:** (a) kestirim — parçacık filtresi + conformal prediction; (b) karar — gözlenen rota seçiminden tersine modelleme (discrete choice / maksimum entropi IRL) + dayanıklı optimizasyonla karşı-olgusal; (c) sistem mühendisliği — VoI (ek ölçümün marjinal değeri), veri gecikmesi bütçesi, SysML mimari.
+
+**Başarısızlık ölçütü:** Kapsama hedefi %90 → ölçülen ≥ %85; dış doğrulamada (Kızıldeniz) pişmanlık azalması ≥ %15; tersine modelin gözlenen rota dağılımını açıklama gücü (holdout log-likelihood) baseline'dan anlamlı yüksek. Altında kalırsa iddia düşer.
+
+### "Tek başına indirilebilirlik" testi
+
+| Kaynak | Tek kişi erişimi | Not |
+|---|---|---|
+| IMF PortWatch | ✓ anahtarsız ArcGIS REST | 7 gün gecikme |
+| OpenSky | ✓ ücretsiz kayıt | tarihsel pencere için akademik hesap |
+| T.C. UAB Boğaz XLS | ✓ doğrudan indirme | çeyreklik |
+| ACLED | ✓ kayıt (ücretsiz) | ticari olmayan; tez kapsamında uygun |
+| Global Fishing Watch | ✓ token (ücretsiz) | CC BY-NC 4.0 |
+| Sentinel-1 / Copernicus | ✓ ücretsiz hesap | 6–12 gün tekrar |
+| aisstream.io | ✓ ücretsiz anahtar | canlı AIS |
+| gpsjam.org | ~ yalnız harita | toplu veri yok, ADS-B'den türetilir |
+| ADS-B Exchange | 💰 ücretli | gerekmiyor |
+
+**Kurumsuz yapılabilecek ek bölüm:** "Doktrin ve planlama açısından çıkarımlar" bölümü yazılabilir; bunun için kurum onayı gerekmez, çünkü girdi askerî veri değil, kamuya açık ticari akıştır. Tez bu yönüyle yayın açısından da temiz kalır (ihracat kontrolü/sınıflandırma konusu doğmaz).
+
+### Kısa karşılaştırma
+
+| Çerçeve | İştirak ihtiyacı | Gerçeklik | Risk |
+|---|---|---|---|
+| K1 (askerî ikmal dili) | Yüksek (doğrulama için kurum) | TAM | Sınıflandırma/yayın kısıtı |
+| **A′ (ticari deniz lojistiği, contested)** | **Yok** | **TAM** | Veri gecikmesi; SAR işleme emeği |
+| B (Kızıldeniz tek başına) | Yok | GÜÇLÜ | Literatür daha kalabalık |
+| C (insani koridor) | Yok | GÜÇLÜ (gecikmeli) | Askerî iddia zayıf |
